@@ -1,0 +1,15 @@
+{
+  "name": "puppetlabs-http_authorization",
+  "version": "0.1.0",
+  "author": "puppetlabs",
+  "summary": "Module to manage auth.conf.",
+  "license": "Apache-2.0",
+  "source": "https://github.com/puppetlabs/puppetlabs-http_authorization",
+  "project_page": "https://github.com/puppetlabs/puppetlabs-http_authorization",
+  "issues_url": "https://tickets.puppetlabs.com/browse/MODULES",
+  "dependencies": [
+    {"name":"puppetlabs-stdlib","version_requirement":">= 4.6.0"},
+    {"name":"puppetlabs-concat","version_requirement":"1.x"}
+  ]
+}
+
