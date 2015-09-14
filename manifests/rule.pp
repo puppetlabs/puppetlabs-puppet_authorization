@@ -62,11 +62,11 @@ define http_authorization::rule (
     'sort-order'       => $sort_order,
   }
 
-  # requires https://github.com/puppetlabs/puppetlabs-hocon/pull/23
   hocon_setting { "rule-${name}":
-    path    => $path,
-    setting => 'authorization.rules',
-    value   => $rule,
-    type    => 'array_element',
+    path     => $path,
+    setting  => 'authorization.rules',
+    value    => $rule,
+    type     => 'array_element',
+    provider => 'http_authorization',
   }
 }
