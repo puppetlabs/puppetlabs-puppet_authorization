@@ -25,7 +25,7 @@ define http_authorization::rule (
     fail('$allow and $deny cannot be specified if $allow_unauthenticated is true')
   } elsif $allow and $deny {
     fail('Only one of $allow or $deny can be specified')
-  } elsif not $allow and not $deny and not $allow_unauthenticated {
+  } elsif ! $allow and ! $deny and ! $allow_unauthenticated {
     fail('One of $allow or $deny is required if $allow_unauthenticated is false')
   }
 
