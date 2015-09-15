@@ -1,13 +1,13 @@
-# authorization
+# http_authorization
 
 #### Table of Contents
 
 1. [Overview](#overview)
 2. [Module Description - What the module does and why it is useful](#module-description)
-3. [Setup - The basics of getting started with authorization](#setup)
-    * [What authorization affects](#what-authorization-affects)
+3. [Setup - The basics of getting started with http_authorization](#setup)
+    * [What http_authorization affects](#what-http_authorization-affects)
     * [Setup requirements](#setup-requirements)
-    * [Beginning with authorization](#beginning-with-authorization)
+    * [Beginning with http_authorization](#beginning-with-http_authorization)
 4. [Usage - Configuration options and additional functionality](#usage)
 5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
 5. [Limitations - OS compatibility, etc.](#limitations)
@@ -31,7 +31,7 @@ management, etc.) this is the time to mention it.
 
 ## Setup
 
-### What authorization affects
+### What http_authorization affects
 
 * A list of files, packages, services, or operations that the module will alter,
   impact, or execute on the system it's installed on.
@@ -43,7 +43,7 @@ management, etc.) this is the time to mention it.
 If your module requires anything extra before setting up (pluginsync enabled,
 etc.), mention it here.
 
-### Beginning with authorization
+### Beginning with http_authorization
 
 The very basic steps needed for a user to get the module up and running.
 
@@ -58,10 +58,59 @@ the fancy stuff with your module here.
 
 ## Reference
 
-Here, list the classes, types, providers, facts, etc contained in your module.
-This section should include all of the under-the-hood workings of your module so
-people know what the module is touching on their system but don't need to mess
-with things. (We are working on automating this section!)
+### Classes
+
+* [`http_authorization`](#class-http_authorization)
+
+### Defines
+
+* [`http_authorization::rule`](#define-http_authorizationrule)
+
+### Providers
+
+* [`http_authorization`](#provider-http_authorization)
+
+#### Class: `http_authorization`
+
+Main class, sets up the skeleton server auth.conf file if it doesn't exist.
+
+##### Parameters (all optional)
+
+* `version`: The `authorization.version` setting in the server auth.conf. Valid options: an integer. Default: 1
+
+* `allow_header_cert_info`: The `authorization.allow-header-cert-info` setting in the server auth.conf. Valid options: `true`, `false`. Default: `false`
+
+* `replace`: Whether or not to replace existing file at `path`. If set to true this will cause the file to be regenerated on every puppet run. Valid options: `true`, `false`. Default: `false`
+
+* `path`: Absolute path for auth.conf. Defaults to `${::settings::confdir}/auth.conf`.
+
+#### Define: `http_authorization::rule`
+
+Add individual rules to auth.conf.
+
+##### Parameters (optional unless otherwise specified)
+
+* `match_request_path`: Required. Valid options: a string.
+
+* `match_request_type`: Required. Valid options: `'path'`, `'regex'`
+
+* `ensure`: Whether to add or remove the rule. Valid options: `'present'`, `'absent'`. Defaults to `'present'`
+
+* `rule_name`: The `name` setting for the rule. Valid options: a string. Defaults to `name`.
+
+* `allow`: The `allow` setting for the rule. Cannot be set along with `deny` or `allow_unauthenticated`. Valid options: a string. Defaults to `undef`.
+
+* `deny`: The `deny` setting for the rule. Cannot be set along with `allow` or `allow_unauthenticated`. Valid options: a string. Defaults to `undef`.
+
+* `allow_unauthenticated`: The `allow_unauthenticated` setting for the rule. Cannot be set to `true` along with `deny` or `allow`. Valid options: `true`, `false`. Defaults to `false`.
+
+* `match_request_method`: The `method` setting for the `match_request` in the rule. Valid options: String or array of strings containing: `'put'`, `'post'`, `'get'`, `'head'`, `'delete'`. Defaults to `undef`.
+
+* `match_request_query_params`: The `query_params` setting for the `match_request` in the rule. Valid options: Hash. Defaults to `{}`
+
+* `sort_order`: The sort order for the rule. Valid options: an integer. Defaults to `200`
+
+* `path`: The absolute path for the auth.conf file. Defaults to `$http_authorization::path`
 
 ## Limitations
 
