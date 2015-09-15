@@ -6,19 +6,20 @@ class http_authorization (
 ){
   validate_absolute_path($path)
 
-  concat { $path:
+  concat { 'server-auth.conf':
+    path    => $path,
     replace => $replace,
   }
 
   concat::fragment { '00_header':
-    target  => $path,
+    target  => 'server-auth.conf',
     content => "authorization: {
   rules: []
 "
   }
 
   concat::fragment { '99_footer':
-    target  => $path,
+    target  => 'server-auth.conf',
     content => "}
 "
   }
@@ -27,13 +28,13 @@ class http_authorization (
     path    => $path,
     setting => 'authorization.version',
     value   => $version,
-    require => Concat[$path],
+    require => Concat['server-auth.conf'],
   }
 
   hocon_setting { 'authorization.allow-header-cert-info':
     path    => $path,
     setting => 'authorization.allow-header-cert-info',
     value   => $allow_header_cert_info,
-    require => Concat[$path],
+    require => Concat['server-auth.conf'],
   }
 }

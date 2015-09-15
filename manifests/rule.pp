@@ -63,6 +63,7 @@ define http_authorization::rule (
   }
 
   hocon_setting { "rule-${name}":
+    ensure   => $ensure,
     path     => $path,
     setting  => 'authorization.rules',
     value    => $rule,
