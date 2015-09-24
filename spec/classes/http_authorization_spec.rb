@@ -4,13 +4,9 @@ describe 'http_authorization' do
     { :concat_basedir => '/dne' }
   end
 
-  before do
-    Puppet.settings[:confdir] = '/etc/puppetlabs/puppet'
-  end
-
   context 'defaults' do
     it { is_expected.to contain_concat('server-auth.conf').with({
-      :path    => "#{Puppet.settings[:confdir]}/auth.conf",
+      :path    => '/etc/puppetlabs/puppetserver/conf.d/auth.conf',
       :replace => false,
     })}
 
@@ -23,13 +19,13 @@ describe 'http_authorization' do
     }).with_content(/\}\n/)}
 
     it { is_expected.to contain_hocon_setting('authorization.version').that_requires('Concat[server-auth.conf]').with({
-      :path    => "#{Puppet.settings[:confdir]}/auth.conf",
+      :path    => '/etc/puppetlabs/puppetserver/conf.d/auth.conf',
       :setting => 'authorization.version',
       :value   => 1,
     })}
 
     it { is_expected.to contain_hocon_setting('authorization.allow-header-cert-info').that_requires('Concat[server-auth.conf]').with({
-      :path    => "#{Puppet.settings[:confdir]}/auth.conf",
+      :path    => '/etc/puppetlabs/puppetserver/conf.d/auth.conf',
       :setting => 'authorization.allow-header-cert-info',
       :value   => false,
     })}
