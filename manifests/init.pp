@@ -2,7 +2,7 @@ class http_authorization (
   Integer $version = 1,
   Boolean $allow_header_cert_info = false,
   Boolean $replace = false,
-  String $path = "${::settings::confdir}/auth.conf",
+  String $path = '/etc/puppetlabs/puppetserver/conf.d/auth.conf',
 ){
   validate_absolute_path($path)
 
