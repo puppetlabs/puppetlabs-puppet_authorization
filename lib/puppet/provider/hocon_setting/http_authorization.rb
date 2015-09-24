@@ -12,7 +12,7 @@ Puppet::Type.type(:hocon_setting).provide(:http_authorization, :parent => Puppet
         end
       end
 
-      tmp_val.sort_by! { |rule| [rule['sort_order'], rule['name']] }
+      tmp_val.sort_by! { |rule| [rule['sort-order'], rule['name']] }
 
       new_value = Hocon::ConfigValueFactory.from_any_ref(tmp_val, nil)
 
