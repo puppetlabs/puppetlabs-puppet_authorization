@@ -20,7 +20,7 @@ describe 'puppet_authorization::rule', :type => :define do
     'rule'
   end
 
-  context 'default, allow' do
+  context 'default, one allow' do
     let(:params_override) do
       { :allow => 'bar' }
     end
@@ -38,6 +38,30 @@ describe 'puppet_authorization::rule', :type => :define do
         'allow'         => 'bar',
         'name'          => 'rule',
         'sort-order'    => 200,
+      },
+      :type     => 'array_element',
+      :provider => 'puppet_authorization',
+    })}
+  end
+
+  context 'default, multiple allows' do
+    let(:params_override) do
+      { :allow => ['foo','bar'] }
+    end
+
+    it { is_expected.to contain_hocon_setting('rule-rule').with({
+      :ensure   => 'present',
+      :path     => '/tmp/foo',
+      :setting  => 'authorization.rules',
+      :value    => {
+          'match-request' => {
+              'path'         => '/foo',
+              'type'         => 'path',
+              'query-params' => {},
+          },
+          'allow'         => ['foo', 'bar'],
+          'name'          => 'rule',
+          'sort-order'    => 200,
       },
       :type     => 'array_element',
       :provider => 'puppet_authorization',
@@ -73,6 +97,34 @@ describe 'puppet_authorization::rule', :type => :define do
         'deny'          => 'bar',
         'name'          => 'newrule',
         'sort-order'    => 1,
+      },
+      :type     => 'array_element',
+      :provider => 'puppet_authorization',
+    })}
+  end
+
+  context 'default, multiple allows and denies' do
+    let(:params_override) do
+      {
+          :allow => ['foo', 'bar'],
+          :deny  => ['baz', 'bim']
+      }
+    end
+
+    it { is_expected.to contain_hocon_setting('rule-rule').with({
+      :ensure   => 'present',
+      :path     => '/tmp/foo',
+      :setting  => 'authorization.rules',
+      :value    => {
+          'match-request' => {
+              'path'         => '/foo',
+              'type'         => 'path',
+              'query-params' => {},
+          },
+          'allow'         => ['foo', 'bar'],
+          'deny'          => ['baz', 'bim'],
+          'name'          => 'rule',
+          'sort-order'    => 200,
       },
       :type     => 'array_element',
       :provider => 'puppet_authorization',
@@ -119,18 +171,6 @@ describe 'puppet_authorization::rule', :type => :define do
       it_behaves_like "fail" do
         let(:params_override) {{ :match_request_method => ['put', 'post', 'get', 'head', 'delete', 'foo'] }}
         let(:regex) { 'does not match' }
-      end
-    end
-
-    context 'allow and deny' do
-      it_behaves_like "fail" do
-        let(:params_override) do
-          {
-            :allow => 'foo',
-            :deny  => 'bar',
-          }
-        end
-        let(:regex) { 'Only one of' }
       end
     end
 

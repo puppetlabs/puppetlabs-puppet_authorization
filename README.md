@@ -98,9 +98,9 @@ Add individual rules to auth.conf.
 
 * `rule_name`: The `name` setting for the rule. Valid options: a string. Defaults to `name`.
 
-* `allow`: The `allow` setting for the rule. Cannot be set along with `deny` or `allow_unauthenticated`. Valid options: a string. Defaults to `undef`.
+* `allow`: The `allow` setting for the rule. Cannot be set along with an `allow_unauthenticated` value of `true`. Valid options: a string or an array of strings. Defaults to `undef`.
 
-* `deny`: The `deny` setting for the rule. Cannot be set along with `allow` or `allow_unauthenticated`. Valid options: a string. Defaults to `undef`.
+* `deny`: The `deny` setting for the rule. Cannot be set along with an `allow_unauthenticated` value of `true`. Valid options: a string or an array of strings. Defaults to `undef`.
 
 * `allow_unauthenticated`: The `allow_unauthenticated` setting for the rule. Cannot be set to `true` along with `deny` or `allow`. Valid options: `true`, `false`. Defaults to `false`.
 
