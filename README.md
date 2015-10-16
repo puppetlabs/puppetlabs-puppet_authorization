@@ -1,13 +1,13 @@
-# http_authorization
+# puppet_authorization
 
 #### Table of Contents
 
 1. [Overview](#overview)
 2. [Module Description - What the module does and why it is useful](#module-description)
-3. [Setup - The basics of getting started with http_authorization](#setup)
-    * [What http_authorization affects](#what-http_authorization-affects)
+3. [Setup - The basics of getting started with puppet_authorization](#setup)
+    * [What puppet_authorization affects](#what-puppet_authorization-affects)
     * [Setup requirements](#setup-requirements)
-    * [Beginning with http_authorization](#beginning-with-http_authorization)
+    * [Beginning with puppet_authorization](#beginning-with-puppet_authorization)
 4. [Usage - Configuration options and additional functionality](#usage)
 5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
 5. [Limitations - OS compatibility, etc.](#limitations)
@@ -31,7 +31,7 @@ management, etc.) this is the time to mention it.
 
 ## Setup
 
-### What http_authorization affects
+### What puppet_authorization affects
 
 * A list of files, packages, services, or operations that the module will alter,
   impact, or execute on the system it's installed on.
@@ -43,7 +43,7 @@ management, etc.) this is the time to mention it.
 If your module requires anything extra before setting up (pluginsync enabled,
 etc.), mention it here.
 
-### Beginning with http_authorization
+### Beginning with puppet_authorization
 
 The very basic steps needed for a user to get the module up and running.
 
@@ -60,17 +60,17 @@ the fancy stuff with your module here.
 
 ### Classes
 
-* [`http_authorization`](#class-http_authorization)
+* [`puppet_authorization`](#class-puppet_authorization)
 
 ### Defines
 
-* [`http_authorization::rule`](#define-http_authorizationrule)
+* [`puppet_authorization::rule`](#define-puppet_authorizationrule)
 
 ### Providers
 
-* [`http_authorization`](#provider-http_authorization)
+* [`puppet_authorization`](#provider-puppet_authorization)
 
-#### Class: `http_authorization`
+#### Class: `puppet_authorization`
 
 Main class, sets up the skeleton server auth.conf file if it doesn't exist.
 
@@ -84,7 +84,7 @@ Main class, sets up the skeleton server auth.conf file if it doesn't exist.
 
 * `path`: Absolute path for auth.conf. Defaults to `${::settings::confdir}/auth.conf`.
 
-#### Define: `http_authorization::rule`
+#### Define: `puppet_authorization::rule`
 
 Add individual rules to auth.conf.
 
@@ -110,7 +110,7 @@ Add individual rules to auth.conf.
 
 * `sort_order`: The sort order for the rule. Valid options: an integer. Defaults to `200`
 
-* `path`: The absolute path for the auth.conf file. Defaults to `$http_authorization::path`
+* `path`: The absolute path for the auth.conf file. Defaults to `$puppet_authorization::path`
 
 ## Limitations
 

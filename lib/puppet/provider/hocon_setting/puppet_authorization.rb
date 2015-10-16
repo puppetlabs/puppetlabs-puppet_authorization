@@ -1,4 +1,4 @@
-Puppet::Type.type(:hocon_setting).provide(:http_authorization, :parent => Puppet::Type.type(:hocon_setting).provider(:ruby)) do
+Puppet::Type.type(:hocon_setting).provide(:puppet_authorization, :parent => Puppet::Type.type(:hocon_setting).provider(:ruby)) do
   def set_value(value_to_set)
     if resource[:type] == 'array_element'
       tmp_val = []

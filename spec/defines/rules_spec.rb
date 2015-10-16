@@ -1,7 +1,7 @@
 require 'spec_helper'
-describe 'http_authorization::rule', :type => :define do
+describe 'puppet_authorization::rule', :type => :define do
   let :pre_condition do
-    'class { "http_authorization": path => "/tmp/foo" }'
+    'class { "puppet_authorization": path => "/tmp/foo" }'
   end
 
   let :params do
@@ -40,7 +40,7 @@ describe 'http_authorization::rule', :type => :define do
         'sort-order'    => 200,
       },
       :type     => 'array_element',
-      :provider => 'http_authorization',
+      :provider => 'puppet_authorization',
     })}
   end
 
@@ -75,7 +75,7 @@ describe 'http_authorization::rule', :type => :define do
         'sort-order'    => 1,
       },
       :type     => 'array_element',
-      :provider => 'http_authorization',
+      :provider => 'puppet_authorization',
     })}
   end
 
@@ -103,7 +103,7 @@ describe 'http_authorization::rule', :type => :define do
         'sort-order'            => 200,
       },
       :type     => 'array_element',
-      :provider => 'http_authorization',
+      :provider => 'puppet_authorization',
     })}
   end
 

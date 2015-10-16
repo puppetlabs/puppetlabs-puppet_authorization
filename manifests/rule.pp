@@ -1,4 +1,4 @@
-define http_authorization::rule (
+define puppet_authorization::rule (
   String $match_request_path,
   Enum['path', 'regex'] $match_request_type,
   Enum['present', 'absent'] $ensure = 'present',
@@ -9,7 +9,7 @@ define http_authorization::rule (
   Variant[Array, String, Undef] $match_request_method = undef,
   Hash $match_request_query_params = {},
   Integer $sort_order = 200,
-  String $path = $http_authorization::path,
+  String $path = $puppet_authorization::path,
 ) {
   if $match_request_method =~ String {
     validate_re($match_request_method, '^(put|post|get|head|delete)$') 
@@ -68,6 +68,6 @@ define http_authorization::rule (
     setting  => 'authorization.rules',
     value    => $rule,
     type     => 'array_element',
-    provider => 'http_authorization',
+    provider => 'puppet_authorization',
   }
 }

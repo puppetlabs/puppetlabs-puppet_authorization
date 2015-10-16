@@ -1,4 +1,4 @@
-class http_authorization (
+class puppet_authorization (
   Integer $version = 1,
   Boolean $allow_header_cert_info = false,
   Boolean $replace = false,
