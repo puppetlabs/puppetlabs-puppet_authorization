@@ -1,5 +1,5 @@
 require 'spec_helper'
-describe 'http_authorization' do
+describe 'puppet_authorization' do
   let(:facts) do
     { :concat_basedir => '/dne' }
   end
