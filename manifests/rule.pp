@@ -1,6 +1,7 @@
 define puppet_authorization::rule (
   String $match_request_path,
   Enum['path', 'regex'] $match_request_type,
+  String $path,
   Enum['present', 'absent'] $ensure = 'present',
   String $rule_name = $name,
   Variant[Array, String, Undef] $allow = undef,
@@ -8,8 +9,7 @@ define puppet_authorization::rule (
   Variant[Array, String, Undef] $deny = undef,
   Variant[Array, String, Undef] $match_request_method = undef,
   Hash $match_request_query_params = {},
-  Integer $sort_order = 200,
-  String $path = $puppet_authorization::path,
+  Integer $sort_order = 200
 ) {
   if $match_request_method =~ String {
     validate_re($match_request_method, '^(put|post|get|head|delete)$')
@@ -22,9 +22,11 @@ define puppet_authorization::rule (
   validate_absolute_path($path)
 
   if $allow_unauthenticated and ($allow or $deny) {
-    fail('$allow and $deny cannot be specified if $allow_unauthenticated is true')
+    fail(
+      '$allow and $deny cannot be specified if $allow_unauthenticated is true')
   } elsif ! $allow and ! $deny and ! $allow_unauthenticated {
-    fail('One of $allow or $deny is required if $allow_unauthenticated is false')
+    fail(
+      'One of $allow or $deny is required if $allow_unauthenticated is false')
   }
 
   if $match_request_method {

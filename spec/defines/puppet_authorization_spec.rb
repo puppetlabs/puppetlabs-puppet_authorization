@@ -3,29 +3,35 @@ describe 'puppet_authorization' do
   let(:facts) do
     { :concat_basedir => '/dne' }
   end
+  let(:title) do
+    '/tmp/foo'
+  end
 
   context 'defaults' do
-    it { is_expected.to contain_concat('server-auth.conf').with({
-      :path    => '/etc/puppetlabs/puppetserver/conf.d/auth.conf',
+    it {is_expected.to contain_concat(title).with({
+      :path    => title,
       :replace => false,
     })}
 
-    it { is_expected.to contain_concat__fragment('00_header').with({
-      :target => 'server-auth.conf',
+    it { is_expected.to contain_concat__fragment("00_header_#{title}").with({
+      :target => title,
     }).with_content(/authorization: \{\n  rules: \[\]\n/)}
 
-    it { is_expected.to contain_concat__fragment('99_footer').with({
-      :target => 'server-auth.conf',
+    it { is_expected.to contain_concat__fragment("99_footer_#{title}").with({
+      :target => title,
     }).with_content(/\}\n/)}
 
-    it { is_expected.to contain_hocon_setting('authorization.version').that_requires('Concat[server-auth.conf]').with({
-      :path    => '/etc/puppetlabs/puppetserver/conf.d/auth.conf',
+    it { is_expected.to contain_hocon_setting("authorization.version.#{title}").
+          that_requires("Concat[#{title}]").with({
+      :path    => title,
       :setting => 'authorization.version',
       :value   => 1,
     })}
 
-    it { is_expected.to contain_hocon_setting('authorization.allow-header-cert-info').that_requires('Concat[server-auth.conf]').with({
-      :path    => '/etc/puppetlabs/puppetserver/conf.d/auth.conf',
+    it { is_expected.to contain_hocon_setting(
+                            "authorization.allow-header-cert-info.#{title}").
+                            that_requires("Concat[#{title}]").with({
+      :path    => title,
       :setting => 'authorization.allow-header-cert-info',
       :value   => false,
     })}
@@ -41,26 +47,29 @@ describe 'puppet_authorization' do
       }
     end
 
-    it { is_expected.to contain_concat('server-auth.conf').with({
+    it { is_expected.to contain_concat(title).with({
       :path    => '/tmp/foo',
       :replace => true,
     })}
 
-    it { is_expected.to contain_concat__fragment('00_header').with({
-      :target => 'server-auth.conf',
+    it { is_expected.to contain_concat__fragment("00_header_#{title}").with({
+      :target => title,
     }).with_content(/authorization: \{\n  rules: \[\]\n/)}
 
-    it { is_expected.to contain_concat__fragment('99_footer').with({
-      :target => 'server-auth.conf',
+    it { is_expected.to contain_concat__fragment("99_footer_#{title}").with({
+      :target => title,
     }).with_content(/\}\n/)}
 
-    it { is_expected.to contain_hocon_setting('authorization.version').that_requires('Concat[server-auth.conf]').with({
+    it { is_expected.to contain_hocon_setting("authorization.version.#{title}").
+                            that_requires("Concat[#{title}]").with({
       :path    => '/tmp/foo',
       :setting => 'authorization.version',
       :value   => 2,
     })}
 
-    it { is_expected.to contain_hocon_setting('authorization.allow-header-cert-info').that_requires('Concat[server-auth.conf]').with({
+    it { is_expected.to contain_hocon_setting(
+                            "authorization.allow-header-cert-info.#{title}").
+                            that_requires("Concat[#{title}]").with({
       :path    => '/tmp/foo',
       :setting => 'authorization.allow-header-cert-info',
       :value   => true,
