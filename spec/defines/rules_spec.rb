@@ -54,14 +54,14 @@ describe 'puppet_authorization::rule', :type => :define do
       :path     => '/tmp/foo',
       :setting  => 'authorization.rules',
       :value    => {
-          'match-request' => {
-              'path'         => '/foo',
-              'type'         => 'path',
-              'query-params' => {},
-          },
-          'allow'         => ['foo', 'bar'],
-          'name'          => 'rule',
-          'sort-order'    => 200,
+        'match-request' => {
+          'path'         => '/foo',
+          'type'         => 'path',
+          'query-params' => {},
+        },
+        'allow'         => ['foo', 'bar'],
+        'name'          => 'rule',
+        'sort-order'    => 200,
       },
       :type     => 'array_element',
       :provider => 'puppet_authorization',
@@ -106,8 +106,8 @@ describe 'puppet_authorization::rule', :type => :define do
   context 'default, multiple allows and denies' do
     let(:params_override) do
       {
-          :allow => ['foo', 'bar'],
-          :deny  => ['baz', 'bim']
+        :allow => ['foo', 'bar'],
+        :deny  => ['baz', 'bim']
       }
     end
 
@@ -116,15 +116,15 @@ describe 'puppet_authorization::rule', :type => :define do
       :path     => '/tmp/foo',
       :setting  => 'authorization.rules',
       :value    => {
-          'match-request' => {
-              'path'         => '/foo',
-              'type'         => 'path',
-              'query-params' => {},
-          },
-          'allow'         => ['foo', 'bar'],
-          'deny'          => ['baz', 'bim'],
-          'name'          => 'rule',
-          'sort-order'    => 200,
+        'match-request' => {
+          'path'         => '/foo',
+          'type'         => 'path',
+          'query-params' => {},
+        },
+        'allow'         => ['foo', 'bar'],
+        'deny'          => ['baz', 'bim'],
+        'name'          => 'rule',
+        'sort-order'    => 200,
       },
       :type     => 'array_element',
       :provider => 'puppet_authorization',
