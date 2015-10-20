@@ -58,31 +58,29 @@ the fancy stuff with your module here.
 
 ## Reference
 
-### Classes
-
-* [`puppet_authorization`](#class-puppet_authorization)
-
 ### Defines
 
+* [`puppet_authorization`](#define-puppet_authorization)
 * [`puppet_authorization::rule`](#define-puppet_authorizationrule)
 
 ### Providers
 
 * [`puppet_authorization`](#provider-puppet_authorization)
 
-#### Class: `puppet_authorization`
+#### Define: `puppet_authorization`
 
-Main class, sets up the skeleton server auth.conf file if it doesn't exist.
+Sets up the skeleton server auth.conf file if it doesn't exist.
 
 ##### Parameters (all optional)
 
-* `version`: The `authorization.version` setting in the server auth.conf. Valid options: an integer. Default: 1
+* `version`: The `authorization.version` setting in the server auth.conf. Valid options: an integer. Default: `1`.
 
-* `allow_header_cert_info`: The `authorization.allow-header-cert-info` setting in the server auth.conf. Valid options: `true`, `false`. Default: `false`
+* `allow_header_cert_info`: The `authorization.allow-header-cert-info` setting in the server auth.conf. Valid options: `true`, `false`. Default: `false`.
 
-* `replace`: Whether or not to replace existing file at `path`. If set to true this will cause the file to be regenerated on every puppet run. Valid options: `true`, `false`. Default: `false`
+* `replace`: Whether or not to replace existing file at `path`. If set to true this will cause the file to be regenerated on every puppet run. Valid options: `true`, `false`. Default: 
+`false`.
 
-* `path`: Absolute path for auth.conf. Defaults to `${::settings::confdir}/auth.conf`.
+* `path`: Absolute path for auth.conf. Defaults to `name`.
 
 #### Define: `puppet_authorization::rule`
 
@@ -92,7 +90,9 @@ Add individual rules to auth.conf.
 
 * `match_request_path`: Required. Valid options: a string.
 
-* `match_request_type`: Required. Valid options: `'path'`, `'regex'`
+* `match_request_type`: Required. Valid options: `'path'`, `'regex'`.
+
+* `path`: Required. The absolute path for the auth.conf file.
 
 * `ensure`: Whether to add or remove the rule. Valid options: `'present'`, `'absent'`. Defaults to `'present'`
 
@@ -106,11 +106,10 @@ Add individual rules to auth.conf.
 
 * `match_request_method`: The `method` setting for the `match_request` in the rule. Valid options: String or array of strings containing: `'put'`, `'post'`, `'get'`, `'head'`, `'delete'`. Defaults to `undef`.
 
-* `match_request_query_params`: The `query_params` setting for the `match_request` in the rule. Valid options: Hash. Defaults to `{}`
+* `match_request_query_params`: The `query_params` setting for the `match_request` in the rule. Valid options: Hash. Defaults to `{}`.
 
-* `sort_order`: The sort order for the rule. Valid options: an integer. Defaults to `200`
-
-* `path`: The absolute path for the auth.conf file. Defaults to `$puppet_authorization::path`
+* `sort_order`: The sort order for the rule. Valid options: an integer. 
+  Defaults to `200`.
 
 ## Limitations
 

@@ -1,13 +1,14 @@
 require 'spec_helper'
 describe 'puppet_authorization::rule', :type => :define do
   let :pre_condition do
-    'class { "puppet_authorization": path => "/tmp/foo" }'
+    'puppet_authorization { "/tmp/foo": }'
   end
 
   let :params do
     {
       :match_request_path => '/foo',
       :match_request_type => 'path',
+      :path => '/tmp/foo'
     }.merge(params_override)
   end
 
@@ -169,7 +170,9 @@ describe 'puppet_authorization::rule', :type => :define do
 
     context 'bad match_request_method 2' do
       it_behaves_like "fail" do
-        let(:params_override) {{ :match_request_method => ['put', 'post', 'get', 'head', 'delete', 'foo'] }}
+        let(:params_override) {{
+            :match_request_method =>
+                ['put', 'post', 'get', 'head', 'delete', 'foo'] }}
         let(:regex) { 'does not match' }
       end
     end
