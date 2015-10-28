@@ -77,12 +77,9 @@ define puppet_authorization::rule (
     }
   }
 
-  hocon_setting { "rule-${name}":
-    ensure   => $ensure,
-    path     => $path,
-    setting  => 'authorization.rules',
-    value    => $rule,
-    type     => 'array_element',
-    provider => 'puppet_authorization',
+  puppet_authorization_hocon_rule { "rule-${name}":
+    ensure => $ensure,
+    path   => $path,
+    value  => $rule,
   }
 }
