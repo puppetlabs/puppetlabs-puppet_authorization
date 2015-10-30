@@ -53,8 +53,65 @@ for upgrading, you may wish to include an additional section here: Upgrading
 
 ## Usage
 
-Put the classes, types, and resources for customizing, configuring, and doing
-the fancy stuff with your module here.
+The main resource to use is `puppet_authorization::rule`, which manages a single
+rule in the authorization configuration file.  This authorization file also
+needs to be managed with a resource, which is done with `puppet_authorization`.
+
+### Adding a rule
+
+Assuming an empty `auth.conf` file that looks like this:
+
+~~~ hocon
+authorization: {
+  version: 1
+  rules: []
+}
+~~~
+
+The following declares a resource to manage the top-level structure, followed by
+a resource to add a rule for controlling access to the "environments" HTTP
+endpoint:
+
+~~~ puppet
+puppet_authorization { '/etc/puppetlabs/puppetserver/conf.d/auth.conf':
+  version => 1,
+}
+
+puppet_authorization::rule { 'environments':
+  match_request_path   => '/puppet/v3/environments',
+  match_request_type   => 'path',
+  match_request_method => 'get',
+  allow                => 'your.special.admin',
+  sort_order           => 300,
+  path                 => '/etc/puppetlabs/puppetserver/conf.d/auth.conf',
+}
+~~~
+
+Here, we've declared that only `'your.special.admin'` can access the
+`/puppet/v3/environments` endpoint.
+
+Next, we'll see how we can delete our rule from the `auth.conf` file.
+
+### Deleting a rule
+
+Continuing from the previous example to add the "environments" rule, the
+following example declares a resource that will remove it from the file.
+
+~~~ puppet
+puppet_authorization { '/etc/puppetlabs/puppetserver/conf.d/auth.conf':
+  version => 1,
+}
+
+puppet_authorization::rule { 'environments':
+  ensure => absent,
+  path   => '/etc/puppetlabs/puppetserver/conf.d/auth.conf',
+}
+~~~
+
+When removing a rule, it is only necessary to provide the rule name and path to
+the configuration file where it can be found. Since rules must have unique names
+it is not necessary to define the other attributes (`match_request_path`, etc);
+the rule with the matching name will be removed, regardless.
 
 ## Reference
 

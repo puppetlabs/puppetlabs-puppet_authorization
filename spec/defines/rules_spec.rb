@@ -297,4 +297,27 @@ describe 'puppet_authorization::rule', :type => :define do
       end
     end
   end
+
+  context 'class parameters' do
+    context 'not required when ensure=>absent' do
+      let(:params) {{ :ensure => 'absent', :path => '/tmp/foo' }}
+
+      it { is_expected.to contain_hocon_setting('rule-rule').with({
+        :ensure   => 'absent',
+        :path     => '/tmp/foo',
+        :setting  => 'authorization.rules',
+        :type     => 'array_element',
+        :provider => 'puppet_authorization',
+        :value    => {
+          'match-request' => {
+            'path'         => 'undef',
+            'type'         => 'undef',
+            'query-params' => {},
+          },
+          'allow-unauthenticated' => false,
+          'name'                  => 'rule',
+          'sort-order'            => 200
+        }})}
+    end
+  end
 end
