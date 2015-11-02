@@ -26,10 +26,9 @@ describe 'puppet_authorization::rule', :type => :define do
       { :allow => 'bar' }
     end
 
-    it { is_expected.to contain_hocon_setting('rule-rule').with({
+    it { is_expected.to contain_puppet_authorization_hocon_rule('rule-rule').with({
       :ensure   => 'present',
       :path     => '/tmp/foo',
-      :setting  => 'authorization.rules',
       :value    => {
         'match-request' => {
           'path'         => '/foo',
@@ -40,8 +39,6 @@ describe 'puppet_authorization::rule', :type => :define do
         'name'          => 'rule',
         'sort-order'    => 200,
       },
-      :type     => 'array_element',
-      :provider => 'puppet_authorization',
     })}
   end
 
@@ -50,10 +47,9 @@ describe 'puppet_authorization::rule', :type => :define do
       { :allow => ['foo','bar'] }
     end
 
-    it { is_expected.to contain_hocon_setting('rule-rule').with({
+    it { is_expected.to contain_puppet_authorization_hocon_rule('rule-rule').with({
       :ensure   => 'present',
       :path     => '/tmp/foo',
-      :setting  => 'authorization.rules',
       :value    => {
         'match-request' => {
           'path'         => '/foo',
@@ -64,8 +60,6 @@ describe 'puppet_authorization::rule', :type => :define do
         'name'          => 'rule',
         'sort-order'    => 200,
       },
-      :type     => 'array_element',
-      :provider => 'puppet_authorization',
     })}
   end
 
@@ -84,10 +78,9 @@ describe 'puppet_authorization::rule', :type => :define do
       }
     end
 
-    it { is_expected.to contain_hocon_setting('rule-rule').with({
+    it { is_expected.to contain_puppet_authorization_hocon_rule('rule-rule').with({
       :ensure   => 'absent',
       :path     => '/tmp/bar',
-      :setting  => 'authorization.rules',
       :value    => {
         'match-request' => {
           'path'         => '/^.*$/',
@@ -99,8 +92,6 @@ describe 'puppet_authorization::rule', :type => :define do
         'name'          => 'newrule',
         'sort-order'    => 1,
       },
-      :type     => 'array_element',
-      :provider => 'puppet_authorization',
     })}
   end
 
@@ -112,10 +103,9 @@ describe 'puppet_authorization::rule', :type => :define do
       }
     end
 
-    it { is_expected.to contain_hocon_setting('rule-rule').with({
+    it { is_expected.to contain_puppet_authorization_hocon_rule('rule-rule').with({
       :ensure   => 'present',
       :path     => '/tmp/foo',
-      :setting  => 'authorization.rules',
       :value    => {
         'match-request' => {
           'path'         => '/foo',
@@ -127,8 +117,6 @@ describe 'puppet_authorization::rule', :type => :define do
         'name'          => 'rule',
         'sort-order'    => 200,
       },
-      :type     => 'array_element',
-      :provider => 'puppet_authorization',
     })}
   end
 
@@ -140,10 +128,9 @@ describe 'puppet_authorization::rule', :type => :define do
       }
     end
 
-    it { is_expected.to contain_hocon_setting('rule-rule').with({
+    it { is_expected.to contain_puppet_authorization_hocon_rule('rule-rule').with({
       :ensure   => 'present',
       :path     => '/tmp/foo',
-      :setting  => 'authorization.rules',
       :value    => {
         'match-request' => {
           'path'         => '/foo',
@@ -155,8 +142,6 @@ describe 'puppet_authorization::rule', :type => :define do
         'name'                  => 'rule',
         'sort-order'            => 200,
       },
-      :type     => 'array_element',
-      :provider => 'puppet_authorization',
     })}
   end
 
@@ -302,12 +287,9 @@ describe 'puppet_authorization::rule', :type => :define do
     context 'not required when ensure=>absent' do
       let(:params) {{ :ensure => 'absent', :path => '/tmp/foo' }}
 
-      it { is_expected.to contain_hocon_setting('rule-rule').with({
+      it { is_expected.to contain_puppet_authorization_hocon_rule('rule-rule').with({
         :ensure   => 'absent',
         :path     => '/tmp/foo',
-        :setting  => 'authorization.rules',
-        :type     => 'array_element',
-        :provider => 'puppet_authorization',
         :value    => {
           'match-request' => {
             'path'         => 'undef',
