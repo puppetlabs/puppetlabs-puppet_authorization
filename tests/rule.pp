@@ -1,10 +1,5 @@
 $auth_file = '/tmp/auth.conf'
 
-puppet_authorization { $auth_file:
-  version                => 1,
-  allow_header_cert_info => true,
-}
-
 puppet_authorization::rule { 'allow all authenticated for environments':
   ensure               => present,
   match_request_path   => '/puppet/v3/environments',
@@ -12,7 +7,6 @@ puppet_authorization::rule { 'allow all authenticated for environments':
   match_request_method => ['get','post'],
   allow                => '*',
   path                 => $auth_file,
-  require              => Puppet_authorization[$auth_file],
 }
 
 puppet_authorization::rule { 'allow admin and own nodes for catalog':
@@ -22,7 +16,6 @@ puppet_authorization::rule { 'allow admin and own nodes for catalog':
   match_request_method => ['get','post'],
   allow                => ['admin.host.com', '$1', '/admins\.com$/'],
   path                 => $auth_file,
-  require              => Puppet_authorization[$auth_file],
 }
 
 puppet_authorization::rule { 'allow everyone for certificate':
@@ -32,7 +25,6 @@ puppet_authorization::rule { 'allow everyone for certificate':
   match_request_method  => 'get',
   allow_unauthenticated => true,
   path                  => $auth_file,
-  require               => Puppet_authorization[$auth_file],
 }
 
 puppet_authorization::rule { 'deny all catalog for protected environments':
@@ -44,7 +36,6 @@ puppet_authorization::rule { 'deny all catalog for protected environments':
   deny                       => '*',
   path                       => $auth_file,
   sort_order                 => 100,
-  require                    => Puppet_authorization[$auth_file],
 }
 
 puppet_authorization::rule { 'deny some shadowed by environment allow all':
@@ -54,6 +45,4 @@ puppet_authorization::rule { 'deny some shadowed by environment allow all':
   deny               => ['denyone.host.com','/\.denydomain\.org$/'],
   path               => $auth_file,
   sort_order         => 750,
-  require            => Puppet_authorization[$auth_file],
 }
-
