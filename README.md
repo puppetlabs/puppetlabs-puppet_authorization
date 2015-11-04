@@ -22,7 +22,7 @@
 
 The puppet_authorization module generates or changes the auth.conf file using authorization rules written as Puppet resources.
 
-> Note that this module is used only for the new auth.conf file used by Puppet Server 2.2.0 and later. If you are using the previous auth.conf file, this module will not affect it. See Puppet Server documentation (TODO ADD LINK: Server config_file_auth.md?) for more information.
+> Note that this module is used only for the new auth.conf file used by Puppet Server 2.2.0 and later. If you are using the auth.conf file used by core Puppet, this module will not affect it. See [Puppet Server documentation](https://docs.puppetlabs.com/puppetserver/2.2/conf_file_auth.html) for detailed information about the auth.conf file.
 
 This module allows you to add custom rules to your auth.conf file by writing Puppet resources that can create, modify, or remove the associated rules from the auth.conf file.
 It allows the auth.conf to be created entirely from Puppet code---you never have to touch the auth.conf file directly.
@@ -31,9 +31,36 @@ It allows the auth.conf to be created entirely from Puppet code---you never have
 
 ### Beginning with puppet_authorization
 
-The main resource to use is `puppet_authorization::rule`, which manages a single
-rule in the authorization configuration file (auth.conf). This authorization file also
-needs to be managed with a resource, which is done with `puppet_authorization`.
+Note that this section applies only to open source Puppet. In Puppet Enterprise, this resource is managed automatically.
+
+The `puppet_authorization` resource sets up the auth.conf and configures settings that apply globally, rather than being specific to individual rules. 
+
+
+For example, this code:
+
+~~~puppet
+puppet_authorization { '/etc/puppetlabs/puppetserver/conf.d/auth.conf':
+  version => 1,
+  allow_header_cert_info = false
+}
+~~~
+
+would populate the following corresponding settings into the "auth.conf" file:
+
+~~~hocon
+authorization: {
+  version: 1
+  allow_header_cert_info: false
+  rules: ...
+}
+~~~
+
+Note that the value for `rules` in this case would be set to [] if the `rules` array was not yet present in the file. Otherwise, whatever value was already in the target file for `rules` is preserved.
+
+The values used above are:
+
+* `version`: Currently, 1 is the only supported value and is the default.
+* `allow_header_cert_info` controls whether the identity of the client will be inferred from the client's SSL certificate, when false, or from special X-Client HTTP headers, when true. The default for this setting is false. See Puppet Server documentation for information about [disabling HTTPS for Puppet Server](https://github.com/puppetlabs/puppet-server/blob/master/documentation/external_ssl_termination.markdown#disable-https-for-puppet-server) and [`allow-header-cert-info` setting](https://github.com/puppetlabs/trapperkeeper-authorization/blob/master/doc/authorization-config.md#allow-header-cert-info).
 
 The following Usage examples assume an empty auth.conf file that looks like this:
 
@@ -47,6 +74,10 @@ authorization: {
 ## Usage
 
 ### Add a rule
+
+The main resource to use is `puppet_authorization::rule`, which manages a single
+rule in the authorization configuration file (auth.conf). This authorization file also
+needs to be managed with a resource, which is done with `puppet_authorization`.
 
 The following declares a resource to manage the top-level structure, followed by
 a resource to add a rule for controlling access to the "environments" HTTP
@@ -164,19 +195,19 @@ Puppet Server does not automatically start using the new rule definitions in the
 
 If you're using open source Puppet Server, add the following code to your rule resource:  
 
-~~~
+~~~puppet
 notify => Service['puppetserver']
 ~~~
 
 If you're using Puppet Server in PE, add:
 
-~~~
+~~~puppet
 notify => Service['pe-puppetserver']
 ~~~
 
 For example, with this code added, the full rule definition might look like this:
 
-~~~
+~~~puppet
 puppet_authorization::rule { 'catalog_request':
   match_request_path => '^/puppet/v3/catalog/([^/]+)$',
   match_request_type => 'regex',
@@ -207,7 +238,7 @@ Sets up the skeleton server auth.conf file if it doesn't exist.
 
 ##### Parameters (all optional)
 
-* `version`: The `authorization.version` setting in the server auth.conf. Valid options: an integer. Default: `1`.
+* `version`: The `authorization.version` setting in the server auth.conf. Valid options: an integer (currently, 1 is the only supported value). Default: `1`.
 
 * `allow_header_cert_info`: The `authorization.allow-header-cert-info` setting in the server auth.conf. Valid options: `true`, `false`. Default: `false`.
 
@@ -246,4 +277,4 @@ Adds individual rules to auth.conf.
 
 ## Limitations
 
-The auth.conf file this module writes is usable only with Puppet Server 2.2.0 or greater or with Puppet Enterprise 2015.3.0 or greater.
+The auth.conf file this module writes is supported only in open source Puppet Server 2.2.0 or greater or Puppet Enterprise 2015.3.0 or greater. See (https://docs.puppetlabs.com/puppetserver/2.2/config_file_auth.html) for more details about authorization in Puppet Server.
