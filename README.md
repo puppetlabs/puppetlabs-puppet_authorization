@@ -22,7 +22,7 @@
 
 The puppet_authorization module generates or changes the auth.conf file using authorization rules written as Puppet resources.
 
-> Note that this module is used only for the new auth.conf file used by Puppet Server 2.2.0 and later. If you are using the auth.conf file used by core Puppet, this module will not affect it. See [Puppet Server documentation](https://docs.puppetlabs.com/puppetserver/2.2/conf_file_auth.html) for detailed information about the auth.conf file.
+> Note that this module is used only for the new auth.conf file used by Puppet Server 2.2.0 and later. If you are using the auth.conf file used by core Puppet, this module will not affect it. See [Puppet Server documentation](https://docs.puppetlabs.com/puppetserver/latest/conf_file_auth.html) for detailed information about the auth.conf file.
 
 This module allows you to add custom rules to your auth.conf file by writing Puppet resources that can create, modify, or remove the associated rules from the auth.conf file.
 It allows the auth.conf to be created entirely from Puppet code---you never have to touch the auth.conf file directly.
@@ -50,7 +50,7 @@ would populate the following corresponding settings into the "auth.conf" file:
 ~~~hocon
 authorization: {
   version: 1
-  allow_header_cert_info: false
+  allow-header-cert-info: false
   rules: ...
 }
 ~~~
@@ -60,9 +60,9 @@ Note that the value for `rules` in this case would be set to [] if the `rules` a
 The values used above are:
 
 * `version`: Currently, 1 is the only supported value and is the default.
-* `allow_header_cert_info` controls whether the identity of the client will be inferred from the client's SSL certificate, when false, or from special X-Client HTTP headers, when true. The default for this setting is false. See Puppet Server documentation for information about [disabling HTTPS for Puppet Server](https://github.com/puppetlabs/puppet-server/blob/master/documentation/external_ssl_termination.markdown#disable-https-for-puppet-server) and [`allow-header-cert-info` setting](https://github.com/puppetlabs/trapperkeeper-authorization/blob/master/doc/authorization-config.md#allow-header-cert-info).
+* `allow-header-cert-info`: Controls whether the identity of the client will be inferred from the client's SSL certificate, when false, or from special X-Client HTTP headers, when true. The default for this setting is false. See Puppet Server documentation for information about [disabling HTTPS for Puppet Server](http://docs.puppetlabs.com/puppetserver/latest/external_ssl_termination.html#disable-https-for-puppet-server) and [`allow-header-cert-info` setting](https://docs.puppetlabs.com/puppetserver/latest/config_file_auth.html#allow-header-cert-info).
 
-The following Usage examples assume an empty auth.conf file that looks like this:
+The following usage examples assume an empty auth.conf file that looks like this:
 
 ~~~ hocon
 authorization: {
@@ -84,10 +84,6 @@ a resource to add a rule for controlling access to the "environments" HTTP
 endpoint:
 
 ~~~ puppet
-puppet_authorization { '/etc/puppetlabs/puppetserver/conf.d/auth.conf':
-  version => 1,
-}
-
 puppet_authorization::rule { 'environments':
   match_request_path   => '/puppet/v3/environments',
   match_request_type   => 'path',
@@ -108,10 +104,6 @@ Continuing from the previous example to add the "environments" rule, the
 following example declares a resource that removes it from the file.
 
 ~~~ puppet
-puppet_authorization { '/etc/puppetlabs/puppetserver/conf.d/auth.conf':
-  version => 1,
-}
-
 puppet_authorization::rule { 'environments':
   ensure => absent,
   path   => '/etc/puppetlabs/puppetserver/conf.d/auth.conf',
@@ -139,7 +131,7 @@ puppet_authorization::rule { ‘catalog_request':
   match_request_method => ['get’,'post'],
   match_request_query_params => {
     'environment' => [ 'production', 'test' ]},
-  allow => ['$1', 'adminhost.mydomain.com',
+  allow => ['$1', 'adminhost.mydomain.com'],
   sort_order => 200,
   path => '/etc/puppetlabs/puppetserver/conf.d/auth.conf',
 }
@@ -214,7 +206,7 @@ puppet_authorization::rule { 'catalog_request':
   match_request_method => ['get’,'post'],
   match_request_query_params => {
     'environment' => [ 'production', 'test' ]},
-  allow => ['$1', 'adminhost.mydomain.com',
+  allow => ['$1', 'adminhost.mydomain.com'],
   sort_order => 200,
   path => '/etc/puppetlabs/puppetserver/conf.d/auth.conf',
   notify => Service['pe-puppetserver'],
@@ -277,4 +269,4 @@ Adds individual rules to auth.conf.
 
 ## Limitations
 
-The auth.conf file this module writes is supported only in open source Puppet Server 2.2.0 or greater or Puppet Enterprise 2015.3.0 or greater. See (https://docs.puppetlabs.com/puppetserver/2.2/config_file_auth.html) for more details about authorization in Puppet Server.
+The auth.conf file this module writes is supported only in open source Puppet Server 2.2.0 or greater or Puppet Enterprise 2015.3.0 or greater. See (https://docs.puppetlabs.com/puppetserver/latest/config_file_auth.html) for more details about authorization in Puppet Server.
