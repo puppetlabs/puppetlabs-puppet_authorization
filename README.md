@@ -40,12 +40,12 @@ For example, this code:
 
 ~~~puppet
 puppet_authorization { '/etc/puppetlabs/puppetserver/conf.d/auth.conf':
-  version => 1,
-  allow_header_cert_info = false
+  version                => 1,
+  allow_header_cert_info => false
 }
 ~~~
 
-would populate the following corresponding settings into the "auth.conf" file:
+...would populate the following corresponding settings into the "auth.conf" file:
 
 ~~~hocon
 authorization: {
@@ -62,16 +62,16 @@ The values used above are:
 * `version`: Currently, 1 is the only supported value and is the default.
 * `allow-header-cert-info`: Controls whether the identity of the client will be inferred from the client's SSL certificate, when false, or from special X-Client HTTP headers, when true. The default for this setting is false. See Puppet Server documentation for information about [disabling HTTPS for Puppet Server](http://docs.puppetlabs.com/puppetserver/latest/external_ssl_termination.html#disable-https-for-puppet-server) and [`allow-header-cert-info` setting](https://docs.puppetlabs.com/puppetserver/latest/config_file_auth.html#allow-header-cert-info).
 
+## Usage
+
 The following usage examples assume an empty auth.conf file that looks like this:
 
-~~~ hocon
+~~~hocon
 authorization: {
   version: 1
   rules: []
 }
 ~~~
-
-## Usage
 
 ### Add a rule
 
@@ -83,7 +83,7 @@ The following declares a resource to manage the top-level structure, followed by
 a resource to add a rule for controlling access to the "environments" HTTP
 endpoint:
 
-~~~ puppet
+~~~puppet
 puppet_authorization::rule { 'environments':
   match_request_path   => '/puppet/v3/environments',
   match_request_type   => 'path',
@@ -103,7 +103,7 @@ Here, we've declared that only `'your.special.admin'` can access the
 Continuing from the previous example to add the "environments" rule, the
 following example declares a resource that removes it from the file.
 
-~~~ puppet
+~~~puppet
 puppet_authorization::rule { 'environments':
   ensure => absent,
   path   => '/etc/puppetlabs/puppetserver/conf.d/auth.conf',
@@ -125,15 +125,14 @@ You can configure the catalog HTTP endpoint for Puppet Server to:
 In this example, we'll configure the rule to apply only to requests made to the production or test directory environments in Puppet.
 
 ~~~puppet
-puppet_authorization::rule { ‘catalog_request':
-  match_request_path => '^/puppet/v3/catalog/([^/]+)$',
-  match_request_type => 'regex',
-  match_request_method => ['get’,'post'],
-  match_request_query_params => {
-    'environment' => [ 'production', 'test' ]},
-  allow => ['$1', 'adminhost.mydomain.com'],
-  sort_order => 200,
-  path => '/etc/puppetlabs/puppetserver/conf.d/auth.conf',
+puppet_authorization::rule { 'catalog_request':
+  match_request_path         => '^/puppet/v3/catalog/([^/]+)$',
+  match_request_type         => 'regex',
+  match_request_method       => ['get','post'],
+  match_request_query_params => {'environment' => [ 'production', 'test' ]},
+  allow                      => ['$1', 'adminhost.mydomain.com'],
+  sort_order                 => 200,
+  path                       => '/etc/puppetlabs/puppetserver/conf.d/auth.conf',
 }
 ~~~
 
@@ -185,7 +184,7 @@ authorization: {
 
 Puppet Server does not automatically start using the new rule definitions in the auth.conf file as they are applied. Before your auth.conf file changes take effect, the Puppet Server service needs to be restarted. Add the following code to each rule resource to restart the service any time rules in the auth.conf file changes.
 
-If you're using open source Puppet Server, add the following code to your rule resource:  
+If you're using open source Puppet Server, add the following code to your rule resource:
 
 ~~~puppet
 notify => Service['puppetserver']
@@ -201,15 +200,14 @@ For example, with this code added, the full rule definition might look like this
 
 ~~~puppet
 puppet_authorization::rule { 'catalog_request':
-  match_request_path => '^/puppet/v3/catalog/([^/]+)$',
-  match_request_type => 'regex',
-  match_request_method => ['get’,'post'],
-  match_request_query_params => {
-    'environment' => [ 'production', 'test' ]},
-  allow => ['$1', 'adminhost.mydomain.com'],
-  sort_order => 200,
-  path => '/etc/puppetlabs/puppetserver/conf.d/auth.conf',
-  notify => Service['pe-puppetserver'],
+  match_request_path         => '^/puppet/v3/catalog/([^/]+)$',
+  match_request_type         => 'regex',
+  match_request_method       => ['get','post'],
+  match_request_query_params => {'environment' => [ 'production', 'test' ]},
+  allow                      => ['$1', 'adminhost.mydomain.com'],
+  sort_order                 => 200,
+  path                       => '/etc/puppetlabs/puppetserver/conf.d/auth.conf',
+  notify                     => Service['pe-puppetserver'],
 }
 ~~~
 
