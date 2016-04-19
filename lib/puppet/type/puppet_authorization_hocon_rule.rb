@@ -25,6 +25,31 @@ Puppet::Type.newtype(:puppet_authorization_hocon_rule) do
       unless val.is_a?(Hash)
         raise "Value must be a hash but was #{value.class}"
       end
+      validate_acl(val)
+    end
+
+    def validate_acl(val)
+      ["allow", "deny"].each do |rule|
+        if val.has_key?(rule)
+          if val[rule].is_a?(Hash)
+            validate_acl_hash(val[rule], rule)
+          elsif val[rule].is_a?(Array)
+            hashes = val[rule].select {|cur_rule| cur_rule.is_a?(Hash) }
+            hashes.each {|cur_rule| validate_acl_hash(cur_rule, rule) }
+          end
+        end
+      end
+    end
+
+    def validate_acl_hash(val, rule)
+      allowed_keys = ["certname", "extensions"]
+      unknown_keys = val.reject { |k, _| allowed_keys.include?(k) }
+      unless unknown_keys.empty?
+        raise "Only one of 'certname' and 'extensions' are allowed keys in a #{rule} hash. Found '#{unknown_keys.keys.join(', ')}'."
+      end
+      unless val.length == 1
+        raise "Only one of 'certname' and 'extensions' are allowed keys in a #{rule} hash."
+      end
     end
 
     def insync?(is)
