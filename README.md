@@ -5,8 +5,6 @@
 
 1. [Module Description - What the module does and why it is useful](#module-description)
 2. [Setup - The basics of getting started with puppet_authorization](#setup)
-    * [What puppet_authorization affects](#what-puppet_authorization-affects)
-    * [Setup requirements](#setup-requirements)
     * [Beginning with puppet_authorization](#beginning-with-puppet_authorization)
 3. [Usage - Configuration options and additional functionality](#usage)
     * [Add a rule](#add-a-rule)
