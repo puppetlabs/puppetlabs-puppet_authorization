@@ -120,6 +120,31 @@ describe 'puppet_authorization::rule', :type => :define do
     })}
   end
 
+  context 'default, multiple allows and denies with extensions' do
+    let(:params_override) do
+      {
+        :allow => ['foo', 'bar', {'extensions' => {'foo' => 'bar'}}],
+        :deny  => {'extensions' => {'foo' => ['bar', 'baz', 'biz']}},
+      }
+    end
+
+    it { is_expected.to contain_puppet_authorization_hocon_rule('rule-rule').with({
+      :ensure   => 'present',
+      :path     => '/tmp/foo',
+      :value    => {
+        'match-request' => {
+          'path'         => '/foo',
+          'type'         => 'path',
+          'query-params' => {},
+        },
+        'allow'         => ['foo', 'bar', {'extensions' => {'foo' => 'bar'}}],
+        'deny'          => {'extensions' => {'foo' => ['bar', 'baz', 'biz']}},
+        'name'          => 'rule',
+        'sort-order'    => 200,
+      },
+    })}
+  end
+
   context 'allow_unauthenticated' do
     let(:params_override) do
       {

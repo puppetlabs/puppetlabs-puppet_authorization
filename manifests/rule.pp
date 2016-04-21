@@ -1,15 +1,15 @@
 define puppet_authorization::rule (
-  Optional[String] $match_request_path                        = undef,
-  Optional[Enum['path', 'regex']] $match_request_type         = undef,
+  Optional[String] $match_request_path                                = undef,
+  Optional[Enum['path', 'regex']] $match_request_type                 = undef,
   String $path,
-  Enum['present', 'absent'] $ensure                           = 'present',
-  String $rule_name                                           = $name,
-  Variant[Array[String], String, Undef] $allow                = undef,
-  Boolean $allow_unauthenticated                              = false,
-  Variant[Array[String], String, Undef] $deny                 = undef,
-  Variant[Array[String], String, Undef] $match_request_method = undef,
-  Hash $match_request_query_params                            = {},
-  Integer $sort_order                                         = 200
+  Enum['present', 'absent'] $ensure                                   = 'present',
+  String $rule_name                                                   = $name,
+  Variant[Array[Variant[String, Hash]], String, Hash, Undef] $allow   = undef,
+  Boolean $allow_unauthenticated                                      = false,
+  Variant[Array[Variant[String, Hash]], String, Hash, Undef] $deny    = undef,
+  Variant[Array[String], String, Undef] $match_request_method         = undef,
+  Hash $match_request_query_params                                    = {},
+  Integer $sort_order                                                 = 200
 ) {
   if $ensure == 'present' {
     if $match_request_method =~ String {

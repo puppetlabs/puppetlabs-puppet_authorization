@@ -253,9 +253,9 @@ Adds individual rules to auth.conf.
 
 * `rule_name`: The `name` setting for the rule. Valid options: a string. Defaults to `name`.
 
-* `allow`: The `allow` setting for the rule. Cannot be set along with an `allow_unauthenticated` value of true. Valid options: a string or an array of strings. Defaults to undef.
+* `allow`: The `allow` setting for the rule. Cannot be set along with an `allow_unauthenticated` value of true. Valid options: a hash, a string or an array of strings and/or hashes. A hash here must contain only one of `extensions` or `certname`. Defaults to undef. For more details on the `allow` setting, see https://github.com/puppetlabs/trapperkeeper-authorization/blob/master/doc/authorization-config.md#allow.
 
-* `deny`: The `deny` setting for the rule. Cannot be set along with an `allow_unauthenticated` value of true. Valid options: a string or an array of strings. Defaults to undef.
+* `deny`: The `deny` setting for the rule. Cannot be set along with an `allow_unauthenticated` value of true.  Valid options: a hash, a string or an array of strings and/or hashes. A hash here must contain only one of `extensions` or `certname`. Defaults to undef. For more details on the `deny` setting, see https://github.com/puppetlabs/trapperkeeper-authorization/blob/master/doc/authorization-config.md#deny.
 
 * `allow_unauthenticated`: The `allow_unauthenticated` setting for the rule. Cannot be set to true along with `deny` or `allow`. Valid options: true, false. Defaults to false.
 
