@@ -18,6 +18,8 @@
 
 ## Module Description
 
+TEST TEST TEST DO NO MERGE!
+
 The puppet_authorization module generates or changes the auth.conf file using authorization rules written as Puppet resources.
 
 > Note that this module is used only for the new auth.conf file used by Puppet Server 2.2.0 and later. If you are using the auth.conf file used by core Puppet, this module will not affect it. See [Puppet Server documentation](https://docs.puppetlabs.com/puppetserver/latest/conf_file_auth.html) for detailed information about the auth.conf file.
