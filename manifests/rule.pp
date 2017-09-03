@@ -13,11 +13,9 @@ define puppet_authorization::rule (
 ) {
   if $ensure == 'present' {
     if $allow_unauthenticated and ($allow or $deny) {
-      fail(
-        '$allow and $deny cannot be specified if $allow_unauthenticated is true')
+      fail('$allow and $deny cannot be specified if $allow_unauthenticated is true')
     } elsif ! $allow and ! $deny and ! $allow_unauthenticated {
-      fail(
-        'One of $allow or $deny is required if $allow_unauthenticated is false')
+      fail('One of $allow or $deny is required if $allow_unauthenticated is false')
     }
   }
 
