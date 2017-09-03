@@ -174,7 +174,7 @@ describe 'puppet_authorization::rule', :type => :define do
     context 'bad match_request_method' do
       it_behaves_like "fail" do
         let(:params_override) {{ :match_request_method => 'foo' }}
-        let(:regex) { 'does not match' }
+        let(:regex) { 'got String' }
       end
     end
 
@@ -183,7 +183,7 @@ describe 'puppet_authorization::rule', :type => :define do
         let(:params_override) {{
             :match_request_method =>
                 ['put', 'post', 'get', 'head', 'delete', 'foo'] }}
-        let(:regex) { 'does not match' }
+        let(:regex) { 'got Tuple' }
       end
     end
 
