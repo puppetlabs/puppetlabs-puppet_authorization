@@ -1,33 +1,21 @@
 define puppet_authorization::rule (
-  Optional[String] $match_request_path                                = undef,
-  Optional[Enum['path', 'regex']] $match_request_type                 = undef,
-  String $path,
-  Enum['present', 'absent'] $ensure                                   = 'present',
-  String $rule_name                                                   = $name,
-  Variant[Array[Variant[String, Hash]], String, Hash, Undef] $allow   = undef,
-  Boolean $allow_unauthenticated                                      = false,
-  Variant[Array[Variant[String, Hash]], String, Hash, Undef] $deny    = undef,
-  Variant[Array[String], String, Undef] $match_request_method         = undef,
-  Hash $match_request_query_params                                    = {},
-  Integer $sort_order                                                 = 200
+  Optional[String] $match_request_path                                                                          = undef,
+  Optional[Enum['path', 'regex']] $match_request_type                                                           = undef,
+  Stdlib::Absolutepath $path,
+  Enum['present', 'absent'] $ensure                                                                             = 'present',
+  String $rule_name                                                                                             = $name,
+  Variant[Array[Variant[String, Hash]], String, Hash, Undef] $allow                                             = undef,
+  Boolean $allow_unauthenticated                                                                                = false,
+  Variant[Array[Variant[String, Hash]], String, Hash, Undef] $deny                                              = undef,
+  Variant[Array[Puppet_authorization::Httpmethod], Puppet_authorization::Httpmethod, Undef] $match_request_method = undef,
+  Hash $match_request_query_params                                                                              = {},
+  Integer $sort_order                                                                                           = 200
 ) {
   if $ensure == 'present' {
-    if $match_request_method =~ String {
-      validate_re($match_request_method, '^(put|post|get|head|delete)$')
-    } elsif $match_request_method =~ Array {
-      $match_request_method.each |$method| {
-        validate_re($method, '^(put|post|get|head|delete)$')
-      }
-    }
-
-    validate_absolute_path($path)
-
     if $allow_unauthenticated and ($allow or $deny) {
-      fail(
-        '$allow and $deny cannot be specified if $allow_unauthenticated is true')
+      fail('$allow and $deny cannot be specified if $allow_unauthenticated is true')
     } elsif ! $allow and ! $deny and ! $allow_unauthenticated {
-      fail(
-        'One of $allow or $deny is required if $allow_unauthenticated is false')
+      fail('One of $allow or $deny is required if $allow_unauthenticated is false')
     }
   }
 

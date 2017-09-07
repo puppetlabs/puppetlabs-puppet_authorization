@@ -2,10 +2,8 @@ define puppet_authorization (
   Integer $version = 1,
   Boolean $allow_header_cert_info = false,
   Boolean $replace = false,
-  String $path = $name,
+  Stdlib::Absolutepath $path = $name,
 ){
-  validate_absolute_path($path)
-
   concat { $name:
     path    => $path,
     replace => $replace,
