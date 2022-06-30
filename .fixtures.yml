@@ -1,13 +1,14 @@
 fixtures:
   repositories:
     "stdlib":
-      "repo": "git://github.com/puppetlabs/puppetlabs-stdlib.git"
-      "ref": "master"
+      "repo": "https://github.com/puppetlabs/puppetlabs-stdlib.git"
+      "ref": "main"
     "concat":
-      "repo": "git://github.com/puppetlabs/puppetlabs-concat.git"
-      "ref": "master"
+      "repo": "https://github.com/puppetlabs/puppetlabs-concat.git"
+      "ref": "main"
     "hocon":
-      "repo": "git://github.com/puppetlabs/puppetlabs-hocon.git"
+      "repo": "https://github.com/puppetlabs/puppetlabs-hocon.git"
+      # NOTE: module is archived, so not using "main"
       "ref": "master"
   symlinks:
     "puppet_authorization": "#{source_dir}"
