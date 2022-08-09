@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org).
 
+## Unsupported Release 0.6.0
+### Summary
+This release increases the upper bounds of several dependencies,
+adds support for new OSes, and migrates the module to Vox Pupuli.
+
+### Changed
+- Migrated module to Vox Pupuli (including module_sync)
+- Moved reference documentation into Puppet Strings + [REFERENCE.md](./REFERENCE.md).
+- Moved upper bound of compatible puppetlabs-stdlib from < 7.0.0 to < 9.0.0.
+- Moved upper bound of compatible puppetlabs-concat from < 7.0.0 to < 8.0.0.
+- Changed puppetlabs-hocon to puppet-hocon
+
+### Added
+- Support for Rocky, AlmaLinux, Fedora, and Debian
+
+
 ## Unsupported Release 0.5.0
 ### Summary
 This release increases the upper bounds of several dependencies and adds support for two new OS.
