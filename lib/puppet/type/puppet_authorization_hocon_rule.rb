@@ -11,7 +11,7 @@ Puppet::Type.newtype(:puppet_authorization_hocon_rule) do
   newparam(:path) do
     desc 'The file Puppet will ensure contains the specified setting.'
     validate do |value|
-      unless (Puppet.features.posix? and value =~ %r{^/}) or (Puppet.features.microsoft_windows? and (value =~ %r{^.:/} or value =~ %r{^//[^/]+/[^/]+}))
+      unless (Puppet.features.posix? && value =~ %r{^/}) || (Puppet.features.microsoft_windows? && (value =~ %r{^.:/} || value =~ %r{^//[^/]+/[^/]+}))
         raise(Puppet::Error, "File paths must be fully qualified, not '#{value}'")
       end
     end
@@ -29,7 +29,7 @@ Puppet::Type.newtype(:puppet_authorization_hocon_rule) do
 
     def validate_acl(val)
       ['allow', 'deny'].each do |rule|
-        if val.has_key?(rule)
+        if val.key?(rule)
           if val[rule].is_a?(Hash)
             validate_acl_hash(val[rule], rule)
           elsif val[rule].is_a?(Array)
