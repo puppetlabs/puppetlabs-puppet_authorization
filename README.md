@@ -25,6 +25,11 @@ The puppet_authorization module generates or changes the auth.conf file using au
 This module allows you to add custom rules to your auth.conf file by writing Puppet resources that can create, modify, or remove the associated rules from the auth.conf file.
 It allows the auth.conf to be created entirely from Puppet code---you never have to touch the auth.conf file directly.
 
+> This module is maintained by Puppet, but we have no plans for future feature development. We will keep it working with current versions of Puppet, but new feature development will come from community contributions. It does not qualify for Puppet Support plans.
+>
+> [tier:maintenance-mode]
+
+
 ## Setup
 
 ### Beginning with puppet_authorization
