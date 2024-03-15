@@ -1,4 +1,13 @@
 ---
+.pdkignore:
+  paths:
+    - /.*.yml
+    - /pdk.yaml
+    - /.pmtignore
+    - /.git*
+    - /.editorconfig
+    - /provision.yaml
+
 Gemfile:
   required:
     ":development":
