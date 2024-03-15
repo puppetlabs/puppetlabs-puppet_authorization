@@ -11,3 +11,6 @@ Gemfile:
         condition: "Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.3.0')"
 changelog_since_tag: "0.5.0"
 
+spec/spec_helper.rb:
+  coverage_report: true
+  minimum_code_coverage_percentage: 100
