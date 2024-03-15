@@ -29,18 +29,20 @@ EOS
       end
     end
 
-    it 'should add a new rule to the array' do
+    it 'adds a new rule to the array' do
       resource = Puppet::Type::Puppet_authorization_hocon_rule.new(
-        :title => 'bar rule',
-        :path  => tmpfile,
-        :value => {
+        title: 'bar rule',
+        path: tmpfile,
+        value: {
           'match-request' => {
             'path' => '/bar',
             'type' => 'path'
           },
           'allow'      => 'bar',
           'name'       => 'bar-rule',
-          'sort-order' => 777 })
+          'sort-order' => 777
+        },
+      )
 
       provider = provider_class.new(resource)
       expect(provider.exists?).to be false
@@ -68,20 +70,21 @@ authorization: {
           "name": "bar-rule",
           "sort-order": 777
       }
-  
+#{'  '}
   ]
 }
 EOS
     end
 
-    it 'should remove a rule from the array' do
+    it 'removes a rule from the array' do
       resource = Puppet::Type::Puppet_authorization_hocon_rule.new(
-        :title  => 'foo rule',
-        :path   => tmpfile,
-        :ensure => 'absent',
-        :value  => {
+        title: 'foo rule',
+        path: tmpfile,
+        ensure: 'absent',
+        value: {
           'name' => 'foo-rule',
-          })
+        },
+      )
 
       provider = provider_class.new(resource)
       expect(provider.exists?).to be true
@@ -96,18 +99,20 @@ EOS
   end
 
   context 'rules setting not already in target file' do
-    it 'should create the rule setting as an array and add a rule to it' do
+    it 'creates the rule setting as an array and add a rule to it' do
       resource = Puppet::Type::Puppet_authorization_hocon_rule.new(
-          :title => 'bar rule',
-          :path  => tmpfile,
-          :value => {
-              'match-request' => {
-                  'path' => '/bar',
-                  'type' => 'path'
-              },
+          title: 'bar rule',
+          path: tmpfile,
+          value: {
+            'match-request' => {
+              'path' => '/bar',
+                'type' => 'path'
+            },
               'allow'      => 'bar',
               'name'       => 'bar-rule',
-              'sort-order' => 777 })
+              'sort-order' => 777
+          },
+        )
 
       provider = provider_class.new(resource)
       expect(provider.exists?).to be false
@@ -124,7 +129,7 @@ authorization: {
           "name": "bar-rule",
           "sort-order": 777
       }
-  
+#{'  '}
   ]
 }
       EOS
@@ -132,7 +137,7 @@ authorization: {
   end
 
   context 'rules setting in target file not an array' do
-    it 'should rewrite the rules setting as an array and add a rule to it' do
+    it 'rewrites the rules setting as an array and add a rule to it' do
       File.open(tmpfile, 'w') do |f|
         f.write(<<-EOS)
 authorization: {
@@ -143,16 +148,18 @@ authorization: {
       end
 
       resource = Puppet::Type::Puppet_authorization_hocon_rule.new(
-          :title => 'bar rule',
-          :path  => tmpfile,
-          :value => {
-              'match-request' => {
-                  'path' => '/bar',
-                  'type' => 'path'
-              },
+          title: 'bar rule',
+          path: tmpfile,
+          value: {
+            'match-request' => {
+              'path' => '/bar',
+                'type' => 'path'
+            },
               'allow'      => 'bar',
               'name'       => 'bar-rule',
-              'sort-order' => 777 })
+              'sort-order' => 777
+          },
+        )
 
       provider = provider_class.new(resource)
       expect(provider.exists?).to be false
@@ -170,11 +177,10 @@ authorization: {
           "name": "bar-rule",
           "sort-order": 777
       }
-  
+#{'  '}
   ]
 }
       EOS
     end
   end
-
 end
