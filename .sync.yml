@@ -1,8 +1,13 @@
-# This file can be used to customize the files managed by PDK.
-#
-# See https://github.com/puppetlabs/pdk-templates/blob/main/README.md
-# for more information.
-#
-# See https://github.com/puppetlabs/pdk-templates/blob/main/config_defaults.yml
-# for the default values.
---- {}
+---
+Gemfile:
+  required:
+    ":development":
+      - gem: hocon
+        version: "~> 1.0"
+  optional:
+    ':development':
+      - gem: 'github_changelog_generator'
+        version: '~> 1.15'
+        condition: "Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.3.0')"
+changelog_since_tag: "0.5.0"
+
