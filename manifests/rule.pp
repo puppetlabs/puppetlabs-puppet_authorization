@@ -1,6 +1,32 @@
+# @summary manage a puppetserver authorization rule
+#
+# @param path
+#   The path to the auth.conf file
+# @param ensure
+#   State of rule
+# @param rule_name
+#   An arbitrary name used to identity the rule
+# @param allow
+#   Value(s) to permit an authenticated request
+# @param allow_unauthenticated
+#   Puppet Server will always permit the request (potentially insecure) when set to true.
+#   If true, the rule cannot use the allow or deny parameters.
+# @param deny
+#   Value(s) to deny an authenticated request, even if an allow is also matched.
+# @param match_request_method
+#   Limit rule to match specific HTTP request method(s).
+# @param match_request_query_params
+#   Limit rule to matching query parameters with specific value(s).
+#   An Array of values can be provided to match a request with any of the values.
+# @param sort_order
+#   Rule processing priority, 1 to 399 are evaluated before default Puppet rules, or 601 to 998 are be evaluated after Puppet.
+#   Lower-numbered values evaluated first, and secondarily sorts lexicographically by the name string value's Unicode code points.
+# @param match_request_path
+#   Match request when the endpoint URL starts with or contains the parameter value.
+# @param match_request_type
+#   How Puppet Server will interpret the match_request_path parameter value.
+#
 define puppet_authorization::rule (
-  Optional[String] $match_request_path                                                                          = undef,
-  Optional[Enum['path', 'regex']] $match_request_type                                                           = undef,
   Stdlib::Absolutepath $path,
   Enum['present', 'absent'] $ensure                                                                             = 'present',
   String $rule_name                                                                                             = $name,
@@ -9,7 +35,9 @@ define puppet_authorization::rule (
   Variant[Array[Variant[String, Hash]], String, Hash, Undef] $deny                                              = undef,
   Variant[Array[Puppet_authorization::Httpmethod], Puppet_authorization::Httpmethod, Undef] $match_request_method = undef,
   Hash $match_request_query_params                                                                              = {},
-  Integer $sort_order                                                                                           = 200
+  Integer $sort_order                                                                                           = 200,
+  Optional[String] $match_request_path                                                                          = undef,
+  Optional[Enum['path', 'regex']] $match_request_type                                                           = undef
 ) {
   if $ensure == 'present' {
     if $allow_unauthenticated and ($allow or $deny) {
