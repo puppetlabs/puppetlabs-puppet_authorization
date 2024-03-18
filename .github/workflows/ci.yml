@@ -1,0 +1,44 @@
+name: "ci"
+
+on:
+  pull_request:
+    types:
+      - opened
+      - labeled
+      - synchronize
+    branches:
+      - "main"
+    paths-ignore:
+      - '**.md'
+      - 'examples/**'
+      - 'LICENSE'
+      - 'CODEOWNERS'
+      - 'AUTHORS'
+  workflow_dispatch:
+    inputs:
+      debug:
+        description: "Debug"
+        type: boolean
+        required: false
+        default: true
+      run_spec:
+        description: "Run Spec job"
+        type: boolean
+        required: false
+        default: true
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  Matrix:
+    uses: ./.github/workflows/matrix.yml
+  Spec:
+    if: ${{ github.event_name == 'pull_request' || inputs.run_spec == 'true' }}
+    needs: Matrix
+    uses: ./.github/workflows/module_spec.yml
+    secrets: inherit
+    with:
+      debug: ${{ github.events.inputs.debug == 'true' || contains(github.event.pull_request.labels.*.name, 'debug') }}
+      matrix: ${{ needs.Matrix.outputs.spec_matrix }}

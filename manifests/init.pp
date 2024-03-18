@@ -1,17 +1,17 @@
 #
 # @summary Define type to manage the puppetserver authorization
 #
-# @param version [Integer]
+# @param version
 #   The version of the authorization
 #
-# @param allow_header_cert_info [Boolean]
+# @param allow_header_cert_info
 #   Whether to allow header cert info
 #
-# @param replace [Boolean]
+# @param replace
 #   Whether to replace the file
 #
-# @param path [Stdlib::Absolutepath]
-#   The path to the file
+# @param path
+#   The path to the auth.conf file
 #
 define puppet_authorization (
   Integer $version = 1,

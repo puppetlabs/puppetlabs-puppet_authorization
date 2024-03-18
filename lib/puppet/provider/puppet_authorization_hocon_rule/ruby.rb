@@ -6,23 +6,24 @@ if Puppet.features.puppet_authorization?
 end
 
 Puppet::Type.type(:puppet_authorization_hocon_rule).provide(:ruby) do
-
   def exists?
     ret_value = false
 
+    # rubocop:disable PreferredHashMethods
     if conf_file.has_value?(setting)
-      if resource[:ensure] == :absent
-        ret_value = value.any? do |existing|
-          Array(@resource[:value]).any? { |v| existing['name'] == v['name'] }
-        end
-      else
-        ret_value = value.any? do |existing|
-          Array(@resource[:value]).include?(existing)
-        end
-      end
+      ret_value = if resource[:ensure] == :absent
+                    value.any? do |existing|
+                      Array(@resource[:value]).any? { |v| existing['name'] == v['name'] }
+                    end
+                  else
+                    value.any? do |existing|
+                      Array(@resource[:value]).include?(existing)
+                    end
+                  end
     end
+    # rubocop:enable PreferredHashMethods
 
-    return ret_value
+    ret_value
   end
 
   def create
@@ -38,8 +39,13 @@ Puppet::Type.type(:puppet_authorization_hocon_rule).provide(:ruby) do
   end
 
   def value
-    val = conf_file.has_value?(setting) ?
-        conf_object.get_value(setting).unwrapped : []
+    # rubocop:disable PreferredHashMethods
+    val = if conf_file.has_value?(setting)
+            conf_object.get_value(setting).unwrapped
+          else
+            []
+          end
+    # rubocop:enable PreferredHashMethods
 
     # If the current value of the target setting is not an array,
     # present the current value as an empty array so that an
@@ -67,9 +73,10 @@ Puppet::Type.type(:puppet_authorization_hocon_rule).provide(:ruby) do
   end
 
   private
+
   def conf_file
-    if @conf_file.nil? && (not File.exist?(file_path))
-      File.new(file_path, "w")
+    if @conf_file.nil? && !File.exist?(file_path)
+      File.new(file_path, 'w')
     end
     @conf_file ||= Hocon::Parser::ConfigDocumentFactory.parse_file(file_path)
   end
@@ -82,8 +89,8 @@ Puppet::Type.type(:puppet_authorization_hocon_rule).provide(:ruby) do
   end
 
   def conf_object
-    if @conf_file.nil? && (not File.exist?(file_path))
-      File.new(file_path, "w")
+    if @conf_file.nil? && !File.exist?(file_path)
+      File.new(file_path, 'w')
     end
     Hocon::ConfigFactory.parse_file(file_path)
   end

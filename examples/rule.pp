@@ -32,7 +32,7 @@ puppet_authorization::rule { 'deny all catalog for protected environments':
   match_request_path         => '/puppet/v3/catalog/',
   match_request_type         => 'path',
   match_request_query_params => {
-    'environment' => [ 'secure', 'private' ]},
+  'environment' => ['secure', 'private'] },
   deny                       => '*',
   path                       => $auth_file,
   sort_order                 => 100,
