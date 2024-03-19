@@ -4,3 +4,6 @@ fixtures:
     stdlib: https://github.com/puppetlabs/puppetlabs-stdlib.git
     concat: https://github.com/puppetlabs/puppetlabs-concat.git
     hocon: https://github.com/puppetlabs/puppetlabs-hocon.git
+    provision: https://github.com/puppetlabs/provision.git
+    facts: https://github.com/puppetlabs/puppetlabs-facts.git
+    puppet_agent: https://github.com/puppetlabs/puppetlabs-puppet_agent.git

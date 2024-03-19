@@ -7,7 +7,7 @@ on:
       - labeled
       - synchronize
     branches:
-      - "main"
+      - 'master'
     paths-ignore:
       - '**.md'
       - 'examples/**'
