@@ -6,6 +6,11 @@ if Puppet.features.puppet_authorization?
 end
 
 Puppet::Type.type(:puppet_authorization_hocon_rule).provide(:ruby) do
+  desc <<-DOC
+    @summary
+      Manage a single rule in an authorization configuration file.
+  DOC
+
   def exists?
     ret_value = false
 
