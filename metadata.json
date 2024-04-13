@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-puppet_authorization",
-  "version": "0.5.1",
+  "version": "1.0.0",
   "author": "puppetlabs",
   "summary": "Module to manage auth.conf.",
   "license": "Apache-2.0",
