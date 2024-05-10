@@ -14,7 +14,7 @@ Puppet::Type.type(:puppet_authorization_hocon_rule).provide(:ruby) do
   def exists?
     ret_value = false
 
-    # rubocop:disable PreferredHashMethods
+    # rubocop:disable Style/PreferredHashMethods
     if conf_file.has_value?(setting)
       ret_value = if resource[:ensure] == :absent
                     value.any? do |existing|
@@ -26,7 +26,7 @@ Puppet::Type.type(:puppet_authorization_hocon_rule).provide(:ruby) do
                     end
                   end
     end
-    # rubocop:enable PreferredHashMethods
+    # rubocop:enable Style/PreferredHashMethods
 
     ret_value
   end
@@ -44,13 +44,13 @@ Puppet::Type.type(:puppet_authorization_hocon_rule).provide(:ruby) do
   end
 
   def value
-    # rubocop:disable PreferredHashMethods
+    # rubocop:disable Style/PreferredHashMethods
     val = if conf_file.has_value?(setting)
             conf_object.get_value(setting).unwrapped
           else
             []
           end
-    # rubocop:enable PreferredHashMethods
+    # rubocop:enable Style/PreferredHashMethods
 
     # If the current value of the target setting is not an array,
     # present the current value as an empty array so that an
