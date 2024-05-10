@@ -18,7 +18,7 @@
     },
     {
       "name": "puppetlabs-hocon",
-      "version_requirement": ">= 0.9.3 < 2.0.0"
+      "version_requirement": ">= 0.9.3 < 3.0.0"
     }
   ],
   "operatingsystem_support": [
