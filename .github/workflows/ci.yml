@@ -5,7 +5,16 @@ on:
   pull_request:
     branches:
       - 'main'
+    paths-ignore:
+      - '**.md'
+      - 'LICENSE'
+      - 'CODEOWNERS'
+      - 'AUTHORS'
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   Spec:
@@ -18,3 +27,4 @@ jobs:
     secrets: "inherit"
     with:
       runs_on: "ubuntu-20.04"
+      flags: --exclude-platforms '["Ubuntu-22.04-arm", "RedHat-9-arm"]'
