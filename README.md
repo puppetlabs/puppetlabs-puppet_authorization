@@ -1,7 +1,6 @@
 # puppet_authorization
 
-#### Table of Contents
-
+## Table of Contents
 
 1. [Module Description - What the module does and why it is useful](#module-description)
 2. [Setup - The basics of getting started with puppet_authorization](#setup)
@@ -13,14 +12,12 @@
     * [Trigger rule changes](#trigger-rule-changes)
 4. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
 5. [Limitations - OS compatibility, etc.](#limitations)
-6. [Development - Guide for contributing to the module](#development)
-
 
 ## Module Description
 
 The puppet_authorization module generates or changes the auth.conf file using authorization rules written as Puppet resources.
 
-> Note that this module is used only for the new auth.conf file used by Puppet Server 2.2.0 and later. If you are using the auth.conf file used by core Puppet, this module will not affect it. See [Puppet Server documentation](https://docs.puppetlabs.com/puppetserver/latest/conf_file_auth.html) for detailed information about the auth.conf file.
+> Note that this module is used only for the new auth.conf file used by Puppet Server 2.2.0 and later. If you are using the auth.conf file used by core Puppet, this module will not affect it. See [Puppet Server documentation](https://help.puppet.com/core/current/Content/PuppetCore/server/config_file_auth.htm) for detailed information about the auth.conf file.
 
 This module allows you to add custom rules to your auth.conf file by writing Puppet resources that can create, modify, or remove the associated rules from the auth.conf file.
 It allows the auth.conf to be created entirely from Puppet code---you never have to touch the auth.conf file directly.
@@ -29,15 +26,13 @@ It allows the auth.conf to be created entirely from Puppet code---you never have
 >
 > [tier:maintenance-mode]
 
-
 ## Setup
 
 ### Beginning with puppet_authorization
 
 Note that this section applies only to open source Puppet. In Puppet Enterprise, this resource is managed automatically.
 
-The `puppet_authorization` resource sets up the auth.conf and configures settings that apply globally, rather than being specific to individual rules. 
-
+The `puppet_authorization` resource sets up the auth.conf and configures settings that apply globally, rather than being specific to individual rules.
 
 For example, this code:
 
@@ -63,7 +58,7 @@ Note that the value for `rules` in this case would be set to [] if the `rules` a
 The values used above are:
 
 * `version`: Currently, 1 is the only supported value and is the default.
-* `allow-header-cert-info`: Controls whether the identity of the client will be inferred from the client's SSL certificate, when false, or from special X-Client HTTP headers, when true. The default for this setting is false. See Puppet Server documentation for information about [disabling HTTPS for Puppet Server](http://docs.puppetlabs.com/puppetserver/latest/external_ssl_termination.html#disable-https-for-puppet-server) and [`allow-header-cert-info` setting](https://docs.puppetlabs.com/puppetserver/latest/config_file_auth.html#allow-header-cert-info).
+* `allow-header-cert-info`: Controls whether the identity of the client will be inferred from the client's SSL certificate, when false, or from special X-Client HTTP headers, when true. The default for this setting is false. See Puppet Server documentation for information about [disabling HTTPS for Puppet Server](https://help.puppet.com/core/current/Content/PuppetCore/server/external_ssl_termination.htm#DisableHTTPSforPuppetServer) and [`allow-header-cert-info` setting](https://help.puppet.com/core/current/Content/PuppetCore/server/config_file_auth.htm#allow-header-cert-info).
 
 ## Usage
 
@@ -100,7 +95,6 @@ puppet_authorization::rule { 'environments':
 Here, we've declared that only `'your.special.admin'` can access the
 `/puppet/v3/environments` endpoint.
 
-
 ### Delete a rule
 
 Continuing from the previous example to add the "environments" rule, the
@@ -120,7 +114,7 @@ the rule with the matching name will be removed, regardless.
 
 ### Configure the catalog endpoint
 
-You can configure the catalog HTTP endpoint for Puppet Server to: 
+You can configure the catalog HTTP endpoint for Puppet Server to:
 
 * Permit an administrative node to access the catalog for any node.
 * Permit other nodes to be able to access their own catalog, but no other node’s catalog.
@@ -218,12 +212,12 @@ puppet_authorization::rule { 'catalog_request':
 
 ### Defined Types
 
-* [`puppet_authorization`](#define-puppet_authorization)
-* [`puppet_authorization::rule`](#define-puppet_authorizationrule)
+* [`puppet_authorization`](#defined-type-puppet_authorization)
+* [`puppet_authorization::rule`](#defined-type-puppet_authorizationrule)
 
-### Providers
+### Resource Types
 
-* [`puppet_authorization`](#provider-puppet_authorization)
+* [`puppet_authorization_hocon_rule`](REFERENCE.md#puppet_authorization_hocon_rule)
 
 #### Defined Type: `puppet_authorization`
 
@@ -235,8 +229,7 @@ Sets up the skeleton server auth.conf file if it doesn't exist.
 
 * `allow_header_cert_info`: The `authorization.allow-header-cert-info` setting in the server auth.conf. Valid options: `true`, `false`. Default: `false`.
 
-* `replace`: Whether or not to replace existing file at `path`. If set to true this will cause the file to be regenerated on every puppet run. Valid options: `true`, `false`. Default: 
-`false`.
+* `replace`: Whether or not to replace existing file at `path`. If set to true this will cause the file to be regenerated on every puppet run. Valid options: `true`, `false`. Default: `false`.
 
 * `path`: Absolute path for auth.conf. Defaults to `name`.
 
@@ -256,9 +249,9 @@ Adds individual rules to auth.conf.
 
 * `rule_name`: The `name` setting for the rule. Valid options: a string. Defaults to `name`.
 
-* `allow`: The `allow` setting for the rule. Cannot be set along with an `allow_unauthenticated` value of true. Valid options: a hash, a string or an array of strings and/or hashes. A hash here must contain only one of `extensions` or `certname`. Defaults to undef. For more details on the `allow` setting, see https://github.com/puppetlabs/trapperkeeper-authorization/blob/master/doc/authorization-config.md#allow.
+* `allow`: The `allow` setting for the rule. Cannot be set along with an `allow_unauthenticated` value of true. Valid options: a hash, a string or an array of strings and/or hashes. A hash here must contain only one of `extensions` or `certname`. Defaults to undef. For more details, see the [`allow` setting](https://github.com/puppetlabs/trapperkeeper-authorization/blob/master/doc/authorization-config.md#allow).
 
-* `deny`: The `deny` setting for the rule. Cannot be set along with an `allow_unauthenticated` value of true.  Valid options: a hash, a string or an array of strings and/or hashes. A hash here must contain only one of `extensions` or `certname`. Defaults to undef. For more details on the `deny` setting, see https://github.com/puppetlabs/trapperkeeper-authorization/blob/master/doc/authorization-config.md#deny.
+* `deny`: The `deny` setting for the rule. Cannot be set along with an `allow_unauthenticated` value of true.  Valid options: a hash, a string or an array of strings and/or hashes. A hash here must contain only one of `extensions` or `certname`. Defaults to undef. For more details, see the [`deny` setting](https://github.com/puppetlabs/trapperkeeper-authorization/blob/master/doc/authorization-config.md#deny).
 
 * `allow_unauthenticated`: The `allow_unauthenticated` setting for the rule. Cannot be set to true along with `deny` or `allow`. Valid options: true, false. Defaults to false.
 
@@ -270,4 +263,4 @@ Adds individual rules to auth.conf.
 
 ## Limitations
 
-The auth.conf file this module writes is supported only in open source Puppet Server 2.2.0 or greater or Puppet Enterprise 2015.3.0 or greater. See (https://docs.puppetlabs.com/puppetserver/latest/config_file_auth.html) for more details about authorization in Puppet Server.
+The auth.conf file this module writes is supported only in open source Puppet Server 2.2.0 or greater or Puppet Enterprise 2015.3.0 or greater. See [Puppet Server documentation](https://help.puppet.com/core/current/Content/PuppetCore/server/config_file_auth.htm) for more details about authorization in Puppet Server.

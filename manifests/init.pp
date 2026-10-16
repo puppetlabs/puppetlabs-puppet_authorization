@@ -14,10 +14,10 @@
 #   The path to the auth.conf file
 #
 define puppet_authorization (
-  Integer $version = 1,
+  Integer $version                = 1,
   Boolean $allow_header_cert_info = false,
-  Boolean $replace = false,
-  Stdlib::Absolutepath $path = $name,
+  Boolean $replace                = false,
+  Stdlib::Absolutepath $path      = $name,
 ) {
   concat { $name:
     path    => $path,
