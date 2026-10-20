@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Puppet::Type.type(:puppet_authorization_hocon_rule) do
@@ -9,7 +11,7 @@ describe Puppet::Type.type(:puppet_authorization_hocon_rule) do
     )
   end
 
-  it 'is ensurable' do
+  it 'is ensurable' do # rubocop:disable RSpec/MultipleExpectations
     resource[:ensure] = :present
     expect(resource[:ensure]).to be(:present)
     resource[:ensure] = :absent
@@ -32,7 +34,7 @@ describe Puppet::Type.type(:puppet_authorization_hocon_rule) do
       Puppet::Error, %r{Value must be a hash}
   end
 
-  context 'raises an error with invalid allow/deny values' do
+  context 'with invalid allow/deny values' do
     it 'raises an error if both certname and extensions are in the same map' do
       expect { resource[:value] = { 'allow' => { 'certname' => 'foo', 'extensions' => { 'bar' => 'baz' } } } }.to \
         raise_error Puppet::Error, %r{Only one of 'certname' and 'extensions' are allowed keys in a allow hash.}
@@ -48,7 +50,7 @@ describe Puppet::Type.type(:puppet_authorization_hocon_rule) do
         raise_error Puppet::Error, %r{Only one of 'certname' and 'extensions' are allowed keys in a allow hash.}
     end
 
-    context 'checks maps in allow/deny arrays' do
+    context 'with maps in allow/deny arrays' do
       it 'raises an error if both certname and extensions are in the same map' do
         expect { resource[:value] = { 'allow' => ['node1', 'node2', { 'certname' => 'foo', 'extensions' => { 'bar' => 'baz' } }] } }.to \
           raise_error Puppet::Error, %r{Only one of 'certname' and 'extensions' are allowed keys in a allow hash.}

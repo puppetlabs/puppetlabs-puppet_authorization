@@ -1,4 +1,6 @@
-Puppet::Type.newtype(:puppet_authorization_hocon_rule) do
+# frozen_string_literal: true
+
+Puppet::Type.newtype(:puppet_authorization_hocon_rule) do # rubocop:disable Metrics/BlockLength
   ensurable do
     desc 'Manage the state of this type.'
     defaultvalues
@@ -18,13 +20,12 @@ Puppet::Type.newtype(:puppet_authorization_hocon_rule) do
     end
   end
 
-  newproperty(:value, array_matching: :all) do
+  newproperty(:value, array_matching: :all) do # rubocop:disable Metrics/BlockLength
     desc 'The value of the setting to be defined.'
 
     validate do |val|
-      unless val.is_a?(Hash)
-        raise "Value must be a hash but was #{value.class}"
-      end
+      raise "Value must be a hash but was #{value.class}" unless val.is_a?(Hash)
+
       validate_acl(val)
     end
 
@@ -43,20 +44,17 @@ Puppet::Type.newtype(:puppet_authorization_hocon_rule) do
 
     def validate_acl_hash(val, rule)
       allowed_keys = ['certname', 'extensions']
-      unknown_keys = val.reject { |k, _| allowed_keys.include?(k) }
-      unless unknown_keys.empty?
-        raise "Only one of 'certname' and 'extensions' are allowed keys in a #{rule} hash. Found '#{unknown_keys.keys.join(', ')}'."
-      end
+      unknown_keys = val.except(*allowed_keys)
+      raise "Only one of 'certname' and 'extensions' are allowed keys in a #{rule} hash. Found '#{unknown_keys.keys.join(', ')}'." unless unknown_keys.empty?
       return if val.length == 1
+
       raise "Only one of 'certname' and 'extensions' are allowed keys in a #{rule} hash."
     end
 
-    def insync?(_is)
+    def insync?(_current)
       # make sure all passed values are in the file
       Array(@resource[:value]).each do |v|
-        unless provider.value.flatten.include?(v)
-          return false
-        end
+        return false unless provider.value.flatten.include?(v)
       end
       true
     end
@@ -73,14 +71,8 @@ Puppet::Type.newtype(:puppet_authorization_hocon_rule) do
 
   validate do
     message = ''
-    if original_parameters[:path].nil?
-      message += 'path is a required parameter. '
-    end
-    if original_parameters[:value].nil? && self[:ensure] != :absent
-      message += 'value is a required parameter unless ensuring a setting is absent.'
-    end
-    if message != ''
-      raise(Puppet::Error, message)
-    end
+    message += 'path is a required parameter. ' if original_parameters[:path].nil?
+    message += 'value is a required parameter unless ensuring a setting is absent.' if original_parameters[:value].nil? && self[:ensure] != :absent
+    raise(Puppet::Error, message) if message != ''
   end
 end

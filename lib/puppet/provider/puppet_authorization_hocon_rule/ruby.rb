@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'puppet/util/feature'
 if Puppet.features.puppet_authorization?
   require 'hocon/config_factory'
@@ -5,13 +7,13 @@ if Puppet.features.puppet_authorization?
   require 'hocon/config_value_factory'
 end
 
-Puppet::Type.type(:puppet_authorization_hocon_rule).provide(:ruby) do
+Puppet::Type.type(:puppet_authorization_hocon_rule).provide(:ruby) do # rubocop:disable Metrics/BlockLength
   desc <<-DOC
     @summary
       Manage a single rule in an authorization configuration file.
   DOC
 
-  def exists?
+  def exists? # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     ret_value = false
 
     # rubocop:disable Style/PreferredHashMethods
@@ -57,9 +59,7 @@ Puppet::Type.type(:puppet_authorization_hocon_rule).provide(:ruby) do
     # element is added to an empty array (as opposed to converting
     # the current value into the first element in an array and
     # adding the value to set as a second element in the array).
-    unless val.is_a?(Array)
-      val = []
-    end
+    val = [] unless val.is_a?(Array)
     val
   end
 
@@ -80,9 +80,7 @@ Puppet::Type.type(:puppet_authorization_hocon_rule).provide(:ruby) do
   private
 
   def conf_file
-    if @conf_file.nil? && !File.exist?(file_path)
-      File.new(file_path, 'w')
-    end
+    File.new(file_path, 'w') if @conf_file.nil? && !File.exist?(file_path)
     @conf_file ||= Hocon::Parser::ConfigDocumentFactory.parse_file(file_path)
   end
 
@@ -94,9 +92,7 @@ Puppet::Type.type(:puppet_authorization_hocon_rule).provide(:ruby) do
   end
 
   def conf_object
-    if @conf_file.nil? && !File.exist?(file_path)
-      File.new(file_path, 'w')
-    end
+    File.new(file_path, 'w') if @conf_file.nil? && !File.exist?(file_path)
     Hocon::ConfigFactory.parse_file(file_path)
   end
 
@@ -111,7 +107,7 @@ Puppet::Type.type(:puppet_authorization_hocon_rule).provide(:ruby) do
     conf_file.set_config_value(setting, new_value)
   end
 
-  def set_value(value_to_set)
+  def set_value(value_to_set) # rubocop:disable Naming/AccessorMethodName
     # Prevent duplicate rules by removing existing ones that have the same
     # rule name as the new value_to_set.
     tmp_val = Array(value).reject do |existing|

@@ -28,16 +28,16 @@
 #
 define puppet_authorization::rule (
   Stdlib::Absolutepath $path,
-  Enum['present', 'absent'] $ensure                                                                             = 'present',
-  String $rule_name                                                                                             = $name,
-  Variant[Array[Variant[String, Hash]], String, Hash, Undef] $allow                                             = undef,
-  Boolean $allow_unauthenticated                                                                                = false,
-  Variant[Array[Variant[String, Hash]], String, Hash, Undef] $deny                                              = undef,
-  Variant[Array[Puppet_authorization::Httpmethod], Puppet_authorization::Httpmethod, Undef] $match_request_method = undef,
-  Hash $match_request_query_params                                                                              = {},
-  Integer $sort_order                                                                                           = 200,
-  Optional[String] $match_request_path                                                                          = undef,
-  Optional[Enum['path', 'regex']] $match_request_type                                                           = undef
+  Enum['present', 'absent'] $ensure                                                                                  = 'present',
+  String $rule_name                                                                                                  = $name,
+  Optional[Variant[Array[Variant[String, Hash]], String, Hash]] $allow                                               = undef,
+  Boolean $allow_unauthenticated                                                                                     = false,
+  Optional[Variant[Array[Variant[String, Hash]], String, Hash]] $deny                                                = undef,
+  Optional[Variant[Array[Puppet_authorization::Httpmethod], Puppet_authorization::Httpmethod]] $match_request_method = undef,
+  Hash $match_request_query_params                                                                                   = {},
+  Integer $sort_order                                                                                                = 200,
+  Optional[String] $match_request_path                                                                               = undef,
+  Optional[Enum['path', 'regex']] $match_request_type                                                                = undef
 ) {
   if $ensure == 'present' {
     if $allow_unauthenticated and ($allow or $deny) {
