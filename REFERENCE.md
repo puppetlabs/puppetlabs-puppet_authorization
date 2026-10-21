@@ -108,7 +108,7 @@ Default value: `$name`
 
 ##### <a name="-puppet_authorization--rule--allow"></a>`allow`
 
-Data type: `Variant[Array[Variant[String, Hash]], String, Hash, Undef]`
+Data type: `Optional[Variant[Array[Variant[String, Hash]], String, Hash]]`
 
 Value(s) to permit an authenticated request
 
@@ -125,7 +125,7 @@ Default value: `false`
 
 ##### <a name="-puppet_authorization--rule--deny"></a>`deny`
 
-Data type: `Variant[Array[Variant[String, Hash]], String, Hash, Undef]`
+Data type: `Optional[Variant[Array[Variant[String, Hash]], String, Hash]]`
 
 Value(s) to deny an authenticated request, even if an allow is also matched.
 
@@ -133,7 +133,7 @@ Default value: `undef`
 
 ##### <a name="-puppet_authorization--rule--match_request_method"></a>`match_request_method`
 
-Data type: `Variant[Array[Puppet_authorization::Httpmethod], Puppet_authorization::Httpmethod, Undef]`
+Data type: `Optional[Variant[Array[Puppet_authorization::Httpmethod], Puppet_authorization::Httpmethod]]`
 
 Limit rule to match specific HTTP request method(s).
 
